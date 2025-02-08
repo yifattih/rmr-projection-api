@@ -15,9 +15,11 @@ gst: ## Show a git status glimpse
     @ $(call headercan,"CHANGES")
     @ changes="$(shell git diff --color --stat HEAD | sed '$d; s/^ //')"
     @ if [ -z "$$changes" ]; then \
-        $(call inform,"No file changes!"); \
+        $(call inform,"No file changes!") \
+		&& echo \
+		&& exit 0; \
     else \
-        echo $$changes;
+        git diff --color --stat HEAD | sed '$d; s/^ //'; \
     fi
     @ echo
     @ $(call headercan,"FILES SUMMARY")
