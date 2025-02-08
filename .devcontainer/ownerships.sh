@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Varibale to store directory name
-DIR_TO_CHANGE=/workspaces/rmr-projection-api-model
+DIR_TO_CHANGE=/workspaces/rmr-projection-api
 
 
 # Move one dir up
