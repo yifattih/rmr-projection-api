@@ -4,10 +4,7 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - dev
-      - core
-      - 'feat/**'
-      - '!feat/**-poc'
+      - '**'
 
 jobs:
   build-test:
