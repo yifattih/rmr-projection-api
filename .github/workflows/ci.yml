@@ -5,57 +5,114 @@ on:
   push:
     branches:
       - '**'
+      - '!main'
+      - '!alpha'
 
 jobs:
-  build-test:
-    name: Test, and Report
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Check out the code from the repository
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      # Step 3: Install Python dependencies (app, dev, and testing dependencies)
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r api/requirements.txt # api dependencies
-          pip install pytest pytest-cov flake8 black coverage # dev/testing dependencies
+          pip install -r service/requirements.txt
+          pip install -r .devcontainer/requirements.txt
 
-      # Step 4: Run code formatting check with Black
-      - name: Check code formatting with Black
+      - name: Lint code with Flake8 and generate report
         run: |
-          black --diff .
+          mkdir -p reports
+          flake8 --tee --output-file=reports/flake8_report.txt service
+      
+      - name: Upload flake8 report as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: flake8-report
+          path: reports/flake8-report.txt
+          retention-days: 30
+  
 
-      # Step 4: Run code formatting check with Black
-      - name: Formatting with Black
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
         run: |
-          black .
+          python -m pip install --upgrade pip
+          pip install -r service/requirements.txt
+          pip install -r .devcontainer/requirements.txt
 
-      # Step 5: Run code linting with Flake8
-      - name: Lint code with Flake8
+      - name: Check code formatting with Black and generate report
         run: |
-          if flake8 . -v; then
-            echo "flake8 succeed!"
-          else
-            echo "flake8 failed with errors"
-            echo "Logs need generated and stored"
-          fi
+          mkdir reports
+          black --check --diff service | tee reports/format_report.txt
+      
+      - name: Upload black report as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: format-report
+          path: reports/black-report.txt
+          retention-days: 30
 
-      # Step 6: Run unit tests and generate a coverage report
+      - name: Check code formatting with isort and generate report
+        run: |
+          isort --check-only --diff service | tee reports/isort_report.txt
+      
+      - name: Upload isort report as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: isort-report
+          path: reports/isort-report.txt
+          retention-days: 30
+
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: [lint, format]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r service/requirements.txt
+          pip install -r .devcontainer/requirements.txt
+
       - name: Run tests with Pytest and generate coverage report
         run: |
-          pytest --cov=. --cov-report=xml --cov-report=term
+          pytest --cov=service --cov-report=xml --cov-report=term
 
-      # Step 7: Upload coverage report as an artifact
-      - name: Upload results to Codecov
+      - name: Upload coverage report as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage.xml
+          retention-days: 30
+
+      - name: Upload coverage results and generate report in Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -65,8 +122,7 @@ jobs:
           verbose: true
           fail_ci_if_error: true
 
-      # Step 8: Run SonarCloud analysis
-      - name: SonarCloud Scan
+      - name: Run quality and security scan and generate report in SonarCloud
         uses: SonarSource/sonarcloud-github-action@v3.1.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
