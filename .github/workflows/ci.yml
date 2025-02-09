@@ -30,13 +30,14 @@ jobs:
       - name: Lint code with Flake8 and generate report
         run: |
           mkdir -p reports
-          flake8 --tee --output-file=reports/flake8_report.txt service
+          flake8 --tee --output-file=reports/flake8_report_.txt service
       
       - name: Upload flake8 report as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: flake8-report
           path: reports/flake8-report.txt
+          if-no-files-found: warn
           retention-days: 30
   
 
@@ -62,23 +63,25 @@ jobs:
         run: |
           mkdir reports
           black --check --diff service | tee reports/format_report.txt
-      
-      - name: Upload black report as an artifact
-        uses: actions/upload-artifact@v2
+  
+      - name: Upload flake8 report as an artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: format-report
+          name: black-report
           path: reports/black-report.txt
+          if-no-files-found: warn
           retention-days: 30
 
       - name: Check code formatting with isort and generate report
         run: |
           isort --check-only --diff service | tee reports/isort_report.txt
       
-      - name: Upload isort report as an artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload flake8 report as an artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: isort-report
-          path: reports/isort-report.txt
+          name: iso-report
+          path: reports/iso-report.txt
+          if-no-files-found: warn
           retention-days: 30
 
 
