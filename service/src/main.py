@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
+
 from .routers import rmr
 
 app = FastAPI(

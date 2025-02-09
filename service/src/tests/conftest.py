@@ -1,5 +1,4 @@
 import numpy as np
-
 import pytest
 
 from ..models.activity_factor import MIFFLINSTJEOR_ACTIVITYFACTOR
@@ -10,21 +9,40 @@ from ..models.time_projection import TimeProjection
 
 
 @pytest.fixture
-def equations()-> Equations:
+def equations() -> Equations:
     return Equations()
+
 
 @pytest.fixture
 def valid_time_projection() -> np.ndarray:
     return np.arange(0, 10)
 
+
 @pytest.fixture
 def invalid_time_projection() -> np.ndarray:
     return np.arange(-10, 0)
 
-@pytest.fixture(params=[
-    {"sex": "male", "units": "si", "age": 30, "weight": 70, "height": 1.75, "weight_loss_rate": 0.5},
-    {"sex": "female", "units": "imperial", "age": 25, "weight": 150, "height": 65, "weight_loss_rate": 0.3},
-])
+
+@pytest.fixture(
+    params=[
+        {
+            "sex": "male",
+            "units": "si",
+            "age": 30,
+            "weight": 70,
+            "height": 1.75,
+            "weight_loss_rate": 0.5,
+        },
+        {
+            "sex": "female",
+            "units": "imperial",
+            "age": 25,
+            "weight": 150,
+            "height": 65,
+            "weight_loss_rate": 0.3,
+        },
+    ]
+)
 def valid_input_data(request):
     return request.param
 
