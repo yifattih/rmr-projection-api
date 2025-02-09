@@ -30,7 +30,7 @@ jobs:
       - name: Lint code with Flake8 and generate report
         run: |
           mkdir -p reports
-          flake8 --tee --output-file=reports/flake8_report_.txt service
+          flake8 --tee --output-file=reports/flake8-report.txt service
       
       - name: Upload flake8 report as an artifact
         uses: actions/upload-artifact@v4
@@ -62,7 +62,7 @@ jobs:
       - name: Check code formatting with Black and generate report
         run: |
           mkdir reports
-          black --check --diff service | tee reports/format_report.txt
+          black --check --diff service | tee reports/black_report.txt
   
       - name: Upload black report as an artifact
         uses: actions/upload-artifact@v4
@@ -74,7 +74,7 @@ jobs:
 
       - name: Check code formatting with isort and generate report
         run: |
-          isort --check-only --diff service | tee reports/isort_report.txt
+          isort --check-only --diff service | tee reports/isort-report.txt
       
       - name: Upload isort report as an artifact
         uses: actions/upload-artifact@v4
@@ -113,7 +113,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report
-          path: reports/pytest-report.txt
+          path: reports/pytest_report.txt
           if-no-files-found: warn
           retention-days: 30
 
