@@ -6,8 +6,6 @@ from ..models.equations import Equations
 from ..models.model import RMRModel
 from ..models.time_projection import TimeProjection
 
-# === Fixtures ===
-
 
 @pytest.fixture
 def coefficients_fixture():
@@ -36,7 +34,7 @@ def activity_factors_fixture():
 
 
 @pytest.fixture
-def time_projection_helper():
+def time_projection() -> TimeProjection:
     """
     Fixture providing an instance of the TimeProjection helper class.
 
