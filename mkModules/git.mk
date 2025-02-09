@@ -228,3 +228,14 @@ gbrn: ## Create a new branch
 		fi; \
 	done;
     @ echo
+
+gbrp: ## Push current branch to remote
+##  |Usage:
+##  |   $ make gbrp
+##
+    @ echo
+    @ $(call headercan,"PUSH BRANCH")
+    @ branch="$(shell git branch --show-current)"
+    @ $(call keyvaluecan,"Branch",$$branch)
+    @ git push origin $$branch
+    @ echo
