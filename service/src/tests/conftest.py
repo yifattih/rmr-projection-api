@@ -1,3 +1,5 @@
+import numpy as np
+
 import pytest
 
 from ..models.activity_factor import MIFFLINSTJEOR_ACTIVITYFACTOR
@@ -5,6 +7,26 @@ from ..models.coefficients import MIFFLINSTJEOR
 from ..models.equations import Equations
 from ..models.model import RMRModel
 from ..models.time_projection import TimeProjection
+
+
+@pytest.fixture
+def equations()-> Equations:
+    return Equations()
+
+@pytest.fixture
+def valid_time_projection() -> np.ndarray:
+    return np.arange(0, 10)
+
+@pytest.fixture
+def invalid_time_projection() -> np.ndarray:
+    return np.arange(-10, 0)
+
+@pytest.fixture(params=[
+    {"sex": "male", "units": "si", "age": 30, "weight": 70, "height": 1.75, "weight_loss_rate": 0.5},
+    {"sex": "female", "units": "imperial", "age": 25, "weight": 150, "height": 65, "weight_loss_rate": 0.3},
+])
+def valid_input_data(request):
+    return request.param
 
 
 @pytest.fixture
@@ -47,20 +69,7 @@ def time_projection() -> TimeProjection:
 
 
 @pytest.fixture
-def equations_helper():
-    """
-    Fixture providing an instance of the Equations helper class.
-
-    Returns
-    -------
-    Equations
-        An instance of the Equations helper.
-    """
-    return Equations()
-
-
-@pytest.fixture
-def rmr_model():
+def rmr_model() -> RMRModel:
     """
     Fixture providing an instance of the RMRModel class.
 
@@ -70,27 +79,6 @@ def rmr_model():
         An instance of the RMRModel class.
     """
     return RMRModel()
-
-
-@pytest.fixture
-def valid_input_data():
-    """
-    Fixture providing valid input data for RMRModel.
-
-    Returns
-    -------
-    dict
-        Valid input data with all required fields.
-    """
-    return {
-        "sex": "male",
-        "units": "si",
-        "age": 30,
-        "weight": 70.0,
-        "height": 1.75,
-        "weight_loss_rate": 0.5,
-        "duration": 10,
-    }
 
 
 @pytest.fixture
