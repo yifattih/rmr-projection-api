@@ -106,7 +106,7 @@ gc: ## Stage files, prepare and execute cit
             && break; \
         else \
             { #try
-                git add "$$input" 2>/dev/null \
+                git add $$input 2>/dev/null \
                 && $(call inform,"File "$$input" is staged") \
                 && break; \
             } || { #catch
