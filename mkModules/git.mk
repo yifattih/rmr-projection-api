@@ -93,7 +93,7 @@ gc: ## Stage files, prepare and execute cit
     elif [ "$$is_change" ]; then \
         $(call headercan,"FILES TO STAGE"); \
     fi
-    @ git diff --color --stat HEAD | sed '$d; s/^ //' && echo
+    @ $(MAKE) gst
     @ while true; do \
         $(call prompt,"Enter filename (. to add all)") && filename="$$input"; \
         if [ "$$input" == "exit" ]; then \
@@ -192,6 +192,9 @@ gcd: ## Delete last commit message
     @ echo
 
 gbr: ## Prints Git branches
+##  |Usage:
+##  |   $ make gbr
+##
     @ echo
     @ CURRENT+="$(shell git branch --show-current)"
     @ LOCAL+="$(shell git branch --format="%(refname:short)")"
@@ -200,3 +203,28 @@ gbr: ## Prints Git branches
     @ $(call keyvaluecan,"Current",$$CURRENT)
     @ $(call keyvaluecan,"Local",$$LOCAL)
     @ $(call keyvaluecan,"Remote",$$REMOTE)
+    @ echo
+
+
+gbrn: ## Create a new branch
+##  |Usage:
+##  |   $ make gbrn <string: branch name>
+##
+    @ echo
+    @ $(call headercan,"NEW BRANCH")
+    @ while true; do \
+		$(call prompt,"Branch name") && branch="$$input"; \
+		if [ "$$branch" == "exit" ]; then \
+			$(call inform,"Branch creation canceled!") \
+			&& echo \
+			&& exit 0; \
+		elif [ "$$branch" == "" ]; then \
+			$(call err,"Branch name cannot be empty!"); \
+		else \
+			git checkout -b "$$branch"; \
+			$(call inform,"Branch $$branch created!") \
+			&& echo \
+			&& exit 0; \
+		fi; \
+	done;
+    @ echo
