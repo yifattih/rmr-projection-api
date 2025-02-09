@@ -9,17 +9,17 @@ RUN apt-get autoremove \
     && useradd -r -g yifattih -m -d /home/yifattih -s /bin/bash yifattih
 
 # Set the working directory for the app
-WORKDIR /api
+WORKDIR /service
 
 # Set ownership permissions to working directory
-RUN chown -R yifattih:yifattih /api
+RUN chown -R yifattih:yifattih /service
 
 # Change user
 USER yifattih 
 
 # Copy app-specific requirements
-COPY requirements.txt /api/
-COPY Procfile /api/
+COPY requirements.txt /service/
+COPY Procfile /service/
 
 # Update pip and and install requirements
 RUN  pip install --user --upgrade pip \
@@ -32,7 +32,7 @@ ENV PATH="/home/yifattih/.local/bin:$PATH"
 ENV ENV="prod"
 
 # Copy the app code into the container
-COPY src/ /api/src/
+COPY src/ /service/src/
 
 EXPOSE 8000
 

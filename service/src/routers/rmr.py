@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+
 from ..models.model import RMRModel
 from ..schemas import InputData, RMROutput
 

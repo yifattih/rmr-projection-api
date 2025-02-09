@@ -1,6 +1,7 @@
 import numpy as np
-from .coefficients import MIFFLINSTJEOR
+
 from .activity_factor import MIFFLINSTJEOR_ACTIVITYFACTOR
+from .coefficients import MIFFLINSTJEOR
 
 
 class Equations:

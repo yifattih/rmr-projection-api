@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 from .routers import rmr
 
-
 app = FastAPI(
     title="Resting Metabolic Rate (RMR) API",
     description=(
@@ -23,6 +22,7 @@ async def root():
             "Welcome to the RMR API. Use /docs for the API" + " documentation."
         )
     }
+
 
 # Include the RMR routes
 app.include_router(rmr.router)
