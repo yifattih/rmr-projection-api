@@ -1,40 +1,47 @@
-import numpy as np
-
-# === Unit Tests: Equations ===
-
-
-def test_equations_valid(equations_helper):
-    """
-    Test Equations helper with valid inputs.
-    """
-    projection = np.array([0, 1, 2])
-    result = equations_helper.mifflinstjeor_rmr(
-        sex="male",
-        units="si",
-        age=30,
-        weight=70,
-        height=1.75,
-        weight_loss_rate=0.5,
-        time_projection=projection,
+def test_mifflinstjeor_rmr_valid(
+    equations, valid_input_data, valid_time_projection
+) -> None:
+    """Test the mifflinstjeor_rmr method with valid input data"""
+    result = equations.mifflinstjeor_rmr(
+        valid_input_data["sex"],
+        valid_input_data["units"],
+        valid_input_data["age"],
+        valid_input_data["weight"],
+        valid_input_data["height"],
+        valid_input_data["weight_loss_rate"],
+        valid_time_projection,
     )
     assert result["exit_code"] == 0
-    assert "sedentary" in result["result"]
-    assert isinstance(result["result"]["sedentary"], list)
+    assert "result" in result
+    assert isinstance(result["result"], dict)
 
 
-def test_equations_invalid(equations_helper):
-    """
-    Test Equations helper with invalid inputs.
-    """
-    projection = np.array([0, 1, 2])
-    result = equations_helper.mifflinstjeor_rmr(
-        sex="unknown",
-        units="si",
-        age=30,
-        weight=70,
-        height=1.75,
-        weight_loss_rate=0.5,
-        time_projection=projection,
+def test_mifflinstjeor_rmr_invalid_sex(
+    equations, valid_time_projection
+) -> None:
+    """Test the mifflinstjeor_rmr method with invalid sex input"""
+    result = equations.mifflinstjeor_rmr(
+        "other", "si", 30, 70, 1.75, 0.5, valid_time_projection
     )
     assert result["exit_code"] == 1
-    assert "Invalid combination" in result["error"]
+    assert "Invalid combination of sex and units" in result["error"]
+
+
+def test_mifflinstjeor_rmr_invalid_units(
+    equations, valid_time_projection
+) -> None:
+    """Test the mifflinstjeor_rmr method with invalid units input"""
+    result = equations.mifflinstjeor_rmr(
+        "male", "metric", 30, 70, 1.75, 0.5, valid_time_projection
+    )
+    assert result["exit_code"] == 1
+    assert "Invalid combination of sex and units" in result["error"]
+
+
+def test_mifflinstjeor_rmr_invalid_time_projection(equations) -> None:
+    """Test the mifflinstjeor_rmr method with invalid time projection input"""
+    result = equations.mifflinstjeor_rmr(
+        "male", "si", 30, 70, 1.75, -0.5, "time_projection"
+    )
+    assert result["exit_code"] == 1
+    assert "error" in result

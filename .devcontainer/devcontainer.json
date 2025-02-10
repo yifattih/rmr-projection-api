@@ -25,8 +25,9 @@
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
 		"ghcr.io/dhoeric/features/act:1": {}
-    }
+    },
 
+    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
