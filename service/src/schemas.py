@@ -7,7 +7,9 @@ class InputData(BaseModel):
     sex: Literal["male", "female"] = Field(
         description="The sex of the individual ('male' or 'female')."
     )
-    units: Literal["si", "imaperial"] = Field(description="The units system ('si' or 'imperial').")
+    units: Literal["si", "imaperial"] = Field(
+        description="The units system ('si' or 'imperial')."
+    )
     age: int = Field(
         gt=19,
         le=150,
