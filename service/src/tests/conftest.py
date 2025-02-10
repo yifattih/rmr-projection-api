@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from unittest.mock import MagicMock
 
 from ..models.activity_factor import MIFFLINSTJEOR_ACTIVITYFACTOR
 from ..models.coefficients import MIFFLINSTJEOR
@@ -16,11 +17,6 @@ def equations() -> Equations:
 @pytest.fixture
 def valid_time_projection() -> np.ndarray:
     return np.arange(0, 10)
-
-
-@pytest.fixture
-def invalid_time_projection() -> np.ndarray:
-    return np.arange(-10, 0)
 
 
 @pytest.fixture(
@@ -48,32 +44,6 @@ def valid_input_data(request):
 
 
 @pytest.fixture
-def coefficients_fixture():
-    """
-    Fixture providing MIFFLINSTJEOR coefficients for testing.
-
-    Returns
-    -------
-    dict
-        A dictionary containing coefficients for the Mifflin-St Jeor equations.
-    """
-    return MIFFLINSTJEOR
-
-
-@pytest.fixture
-def activity_factors_fixture():
-    """
-    Fixture providing activity factors for testing.
-
-    Returns
-    -------
-    dict
-        A dictionary containing activity factors based on activity levels.
-    """
-    return MIFFLINSTJEOR_ACTIVITYFACTOR
-
-
-@pytest.fixture
 def time_projection() -> TimeProjection:
     """
     Fixture providing an instance of the TimeProjection helper class.
@@ -87,34 +57,13 @@ def time_projection() -> TimeProjection:
 
 
 @pytest.fixture
-def rmr_model() -> RMRModel:
+def rmr_model():
     """
     Fixture providing an instance of the RMRModel class.
 
     Returns
     -------
-    RMRModel
-        An instance of the RMRModel class.
+    TimeProjection
+        An instance of the RMRModel.
     """
     return RMRModel()
-
-
-@pytest.fixture
-def edge_case_input_data():
-    """
-    Fixture providing edge case input data for RMRModel.
-
-    Returns
-    -------
-    dict
-        Input data containing edge case values for testing.
-    """
-    return {
-        "sex": "female",
-        "units": "imperial",
-        "age": 20,
-        "weight": 1.0,
-        "height": 1.0,
-        "weight_loss_rate": 0.0,
-        "duration": 0,
-    }
