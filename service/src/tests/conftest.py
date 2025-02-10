@@ -1,9 +1,6 @@
 import numpy as np
 import pytest
-from unittest.mock import MagicMock
 
-from ..models.activity_factor import MIFFLINSTJEOR_ACTIVITYFACTOR
-from ..models.coefficients import MIFFLINSTJEOR
 from ..models.equations import Equations
 from ..models.model import RMRModel
 from ..models.time_projection import TimeProjection
