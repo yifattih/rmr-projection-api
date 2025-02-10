@@ -237,5 +237,5 @@ gbrp: ## Push current branch to remote
     @ $(call headercan,"PUSH BRANCH")
     @ branch="$(shell git branch --show-current)"
     @ $(call keyvaluecan,"Branch",$$branch)
-    @ git push origin $$branch
+    @ git push --set-upstream origin $$branch
     @ echo

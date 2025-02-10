@@ -1,13 +1,15 @@
-from typing import Dict, List
+from typing import Dict, List, Literal
 
 from pydantic import BaseModel, Field
 
 
 class InputData(BaseModel):
-    sex: str = Field(
+    sex: Literal["male", "female"] = Field(
         description="The sex of the individual ('male' or 'female')."
     )
-    units: str = Field(description="The units system ('si' or 'imperial').")
+    units: Literal["si", "imaperial"] = Field(
+        description="The units system ('si' or 'imperial')."
+    )
     age: int = Field(
         gt=19,
         le=150,
