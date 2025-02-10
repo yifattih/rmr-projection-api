@@ -62,7 +62,7 @@ jobs:
       - name: Check code formatting with Black and generate report
         run: |
           mkdir reports
-          black --check --diff service | tee reports/black_report.txt
+          black --check --diff service | tee reports/black-report.txt
   
       - name: Upload black report as an artifact
         uses: actions/upload-artifact@v4
@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: iso-report
-          path: reports/iso-report.txt
+          path: reports/isort-report.txt
           if-no-files-found: warn
           retention-days: 30
 
