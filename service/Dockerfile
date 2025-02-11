@@ -1,40 +1,49 @@
-# app/Dockerfile
-FROM python:3.11-slim
+# Stage 1: Build Dependencies
+FROM python:3.11-alpine AS builder
 
-# Install updates
-# Create a group
-# Create a user (with error handling if already exists)
-RUN apt-get autoremove \
-    && groupadd -f -r yifattih \
-    && useradd -r -g yifattih -m -d /home/yifattih -s /bin/bash yifattih
+# Install necessary dependencies
+RUN apk add --no-cache gcc musl-dev libffi-dev make
 
-# Set the working directory for the app
+# Set the working directory for dependency installation
 WORKDIR /service
 
-# Set ownership permissions to working directory
+# Copy requirements file
+COPY requirements.txt /service/
+
+# Install dependencies in a temporary directory
+RUN pip install --user --no-cache-dir -r requirements.txt
+
+# Stage 2: Final Runtime Image
+FROM python:3.11-alpine
+
+# Create a group and user (with error handling if already exists)
+RUN addgroup -S yifattih \
+    && adduser -S yifattih -G yifattih -h /home/yifattih
+
+# Set the working directory
+WORKDIR /service
+
+# Set ownership permissions
 RUN chown -R yifattih:yifattih /service
 
 # Change user
-USER yifattih 
+USER yifattih  
 
-# Copy app-specific requirements
-COPY requirements.txt /service/
-COPY Procfile /service/
-
-# Update pip and and install requirements
-RUN  pip install --user --upgrade pip \
-    && pip install --user --no-cache-dir -r requirements.txt
+# Copy installed dependencies from builder stage
+COPY --from=builder /root/.local /home/yifattih/.local
 
 # Add the user's local bin directory to PATH
 ENV PATH="/home/yifattih/.local/bin:$PATH"
 
+# Copy only necessary application files
+COPY src/ /service/src/
+COPY Procfile /service/
+
 # Add variable for Procfile execution via honcho
 ENV ENV="prod"
 
-# Copy the app code into the container
-COPY src/ /service/src/
-
+# Expose the application port
 EXPOSE 8000
 
-# Copy the app code into the container
+# Start the application
 CMD ["honcho", "start"]
