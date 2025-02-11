@@ -1,9 +1,8 @@
 # Stage 1: Build Dependencies
-FROM python:3.11-slim AS builder
+FROM python:3.11-alpine AS builder
 
 # Install necessary dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache gcc musl-dev libffi-dev make
 
 # Set the working directory for dependency installation
 WORKDIR /service
@@ -15,11 +14,11 @@ COPY requirements.txt /service/
 RUN pip install --user --no-cache-dir -r requirements.txt
 
 # Stage 2: Final Runtime Image
-FROM python:3.11-slim
+FROM python:3.11-alpine
 
 # Create a group and user (with error handling if already exists)
-RUN groupadd -f -r yifattih \
-    && useradd -r -g yifattih -m -d /home/yifattih -s /bin/bash yifattih
+RUN addgroup -S yifattih \
+    && adduser -S yifattih -G yifattih -h /home/yifattih
 
 # Set the working directory
 WORKDIR /service
