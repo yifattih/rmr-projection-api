@@ -27,7 +27,7 @@ WORKDIR /service
 RUN chown -R yifattih:yifattih /service
 
 # Change user
-USER yifattih 
+USER yifattih  
 
 # Copy installed dependencies from builder stage
 COPY --from=builder /root/.local /home/yifattih/.local
@@ -36,8 +36,8 @@ COPY --from=builder /root/.local /home/yifattih/.local
 ENV PATH="/home/yifattih/.local/bin:$PATH"
 
 # Copy only necessary application files
-COPY --chown=yifattih:yifattih src/ /service/src/
-COPY --chown=yifattih:yifattih Procfile /service/
+COPY src/ /service/src/
+COPY Procfile /service/
 
 # Add variable for Procfile execution via honcho
 ENV ENV="prod"
