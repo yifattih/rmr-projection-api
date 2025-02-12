@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from prometheus_fastapi_instrumentator import Instrumentator
 
-from .routers import rmr
+from .models.model import RMRModel
+from .schemas import InputData, RMROutput
 
 app = FastAPI(
     title="Resting Metabolic Rate (RMR) API",
@@ -12,8 +13,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Instrumentation to expose metrics endpoint for Prometheus
-Instrumentator().instrument(app).expose(app)
+rmr_model = RMRModel()
 
 
 @app.get("/", tags=["Root"])
@@ -25,5 +25,19 @@ async def root():
     }
 
 
-# Include the RMR routes
-app.include_router(rmr.router)
+@app.post("/rmr/", response_model=RMROutput)
+async def calculate_rmr(input_data: InputData):
+    """
+    Endpoint to calculate RMR over a time projection using Mifflin-St. Jeor
+    equations.
+    """
+    result = rmr_model.process(input_data.model_dump())
+
+    if result["exit_code"] != 0:
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    return {"input": result["input"], "output": result["output"]}
+
+
+# Instrumentation to expose metrics endpoint for Prometheus
+Instrumentator().instrument(app).expose(app)
