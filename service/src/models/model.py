@@ -158,10 +158,7 @@ class RMRModel:
                 "duration": duration,
                 "rmr": rmr_result["result"],
                 "time_projection": time_projection.tolist(),
-                "exit_code": 0
-                }
+                "exit_code": 0,
+            }
         except Exception as e:
-            return {
-                "error": str(e),
-                "exit_code": 1
-                }
+            return {"error": str(e), "exit_code": 1}
