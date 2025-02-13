@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from fastapi import FastAPI, HTTPException, Response, status
 from prometheus_fastapi_instrumentator import Instrumentator
 
+from .metadata import Metadata
 from .models.model import RMRModel
 from .schemas import HealthStatus, InputData, OutputData
 
@@ -10,12 +11,12 @@ rmr_model = RMRModel()
 start_time_utc = datetime.now(timezone.utc)  # Store the time the api starts
 
 app = FastAPI(
-    title="Resting Metabolic Rate (RMR) API",
-    description=(
-        "A RESTful API for calculating RMR using Mifflin-St. Jeor"
-        + " equations."
-    ),
-    version="1.0.0",
+    title=Metadata.title,
+    description=Metadata.description,
+    version=Metadata.version,
+    contact=Metadata.contact,
+    license_info=Metadata.license_info,
+    openapi_tags=Metadata.tags,
 )
 
 
@@ -28,7 +29,7 @@ async def root():
     }
 
 
-@app.post("/rmr/", response_model=OutputData)
+@app.post("/rmr/", tags=["RMR"], response_model=OutputData)
 async def calculate_rmr(input_data: InputData, response: Response):
     """
     Endpoint to calculate RMR over a time projection using Mifflin-St. Jeor
@@ -53,7 +54,7 @@ async def calculate_rmr(input_data: InputData, response: Response):
     }
 
 
-@app.get("/health", response_model=HealthStatus)
+@app.get("/health", tags=["Health"], response_model=HealthStatus)
 async def health_check(response: Response):
     current_time_utc = datetime.now(timezone.utc)
     uptime_utc = current_time_utc - start_time_utc
