@@ -128,10 +128,8 @@ def test_calculate_rmr(input_data, expected_status, type) -> None:
     assert response.status_code == expected_status
     if expected_status == 200:
         data = response.json()
-        assert "input" in data
-        assert "output" in data
-        assert "rmr" in data["output"]
-        assert "time_projection" in data["output"]
+        assert "rmr" in data
+        assert "time_projection" in data
 
 
 def test_health_check() -> None:
