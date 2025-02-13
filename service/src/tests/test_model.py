@@ -91,10 +91,9 @@ def test_valid_input(rmr_model):
         "duration": 10,
     }
     result = rmr_model.process(input_data)
-    assert "output" in result
-    assert "rmr" in result["output"]
-    assert "time_projection" in result["output"]
     assert result["exit_code"] == 0
+    assert "rmr" in result
+    assert "time_projection" in result
 
 
 def test_exception_handling(rmr_model, monkeypatch):
