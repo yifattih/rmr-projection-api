@@ -29,7 +29,7 @@ class InputData(BaseModel):
     )
 
 
-class OutputData(BaseModel):
+class OutputData(InputData):
     rmr: Dict[str, list] = Field(
         description="Resting Metabolic Rate (RMR) over the time projection."
     )
@@ -39,3 +39,9 @@ class OutputData(BaseModel):
 class RMROutput(BaseModel):
     input: InputData
     output: OutputData
+
+
+class HealthStatus(BaseModel):
+    status: str
+    uptime_utc: str
+    timestamp: str
