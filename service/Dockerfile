@@ -2,7 +2,7 @@
 FROM python:3.11-alpine AS builder
 
 # Install necessary dependencies
-RUN apk add --no-cache gcc musl-dev libffi-dev make
+RUN apk add --no-cache gcc libffi-dev make musl-dev
 
 # Set the working directory for dependency installation
 WORKDIR /service
