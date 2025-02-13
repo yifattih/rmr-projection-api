@@ -148,14 +148,20 @@ class RMRModel:
                     "exit_code": 1,
                 }
 
-            # Step 3: Return response on success
             return {
-                "input": input_data,
-                "output": {
-                    "rmr": rmr_result["result"],
-                    "time_projection": time_projection.tolist(),
-                },
-                "exit_code": 0,
-            }
+                "sex": sex,
+                "units": units,
+                "age": age,
+                "weight": weight,
+                "height": height,
+                "weight_loss_rate": weight_loss_rate,
+                "duration": duration,
+                "rmr": rmr_result["result"],
+                "time_projection": time_projection.tolist(),
+                "exit_code": 0
+                }
         except Exception as e:
-            return {"error": str(e), "exit_code": 1}
+            return {
+                "error": str(e),
+                "exit_code": 1
+                }
