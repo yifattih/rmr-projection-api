@@ -29,7 +29,7 @@ async def root():
 
 
 @app.post("/rmr/", response_model=OutputData)
-async def calculate_rmr(input_data: InputData):
+async def calculate_rmr(input_data: InputData, response: Response):
     """
     Endpoint to calculate RMR over a time projection using Mifflin-St. Jeor
     equations.
@@ -37,9 +37,22 @@ async def calculate_rmr(input_data: InputData):
     result = rmr_model.process(input_data.model_dump())
 
     if result["exit_code"] != 0:
-        raise HTTPException(status_code=400, detail=result["error"])
+        raise HTTPException(
+            status_code=400,
+            detail=result["error"]
+            )
 
-    return {"input": result["input"], "output": result["output"]}
+    response.status_code = status.HTTP_200_OK
+    return {
+        "sex": result["sex"],
+        "units": result["units"],
+        "age": result["age"],
+        "weight": result["weight"],
+        "height": result["height"],
+        "weight_loss_rate": result["weight_loss_rate"],
+        "duration": result["duration"],
+        "rmr": result["rmr"],
+        "time_projection": result["time_projection"]}
 
 
 @app.get("/health", response_model=HealthStatus)
