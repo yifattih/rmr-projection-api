@@ -16,10 +16,10 @@ class InputData(BaseModel):
         description="Age of the individual in years (20 to 150)",
     )
     weight: float = Field(
-        gt=0, description="Weight in kilograms (SI) or pounds (imperial)"
+        gt=1, description="Weight in kilograms (SI) or pounds (imperial)"
     )
     height: float = Field(
-        gt=0, description="Height in meters (SI) or inches (imperial)"
+        gt=1, description="Height in meters (SI) or inches (imperial)"
     )
     weight_loss_rate: float = Field(
         ge=0, description="Rate of weight loss per time unit"

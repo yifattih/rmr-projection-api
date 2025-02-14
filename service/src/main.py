@@ -38,7 +38,7 @@ async def calculate_rmr(input_data: InputData, response: Response):
     result = rmr_model.process(input_data.model_dump())
 
     if result["exit_code"] != 0:
-        raise HTTPException(status_code=400, detail=result["error"])
+        raise HTTPException(status_code=422, detail=result["error"])
 
     response.status_code = status.HTTP_200_OK
     return {
