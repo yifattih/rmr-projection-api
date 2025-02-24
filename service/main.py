@@ -4,7 +4,6 @@ from fastapi import FastAPI, HTTPException, Response, status
 from models.metadata import Metadata
 from models.model import RMRModel
 from models.schemas import HealthStatus, InputData, OutputData
-from prometheus_fastapi_instrumentator import Instrumentator
 
 rmr_model = RMRModel()
 start_time_utc = datetime.now(timezone.utc)  # Store the time the api starts
@@ -63,7 +62,3 @@ async def health_check(response: Response):
         "uptime_utc": str(uptime_utc),
         "timestamp": str(current_time_utc.isoformat()),
     }
-
-
-# Instrumentation to expose metrics endpoint for Prometheus
-Instrumentator().instrument(app).expose(app)
