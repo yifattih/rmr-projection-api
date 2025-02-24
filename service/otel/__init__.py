@@ -1,9 +1,9 @@
-from . import otel_metrics, otel_logs
+from . import otel_metrics, otel_logs, otel_traces
 from opentelemetry.instrumentation.logging import LoggingInstrumentor
 
 meter = otel_metrics.meter
 logger = otel_logs.logger
-
+tracer = otel_traces.tracer
 
 try:
     from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor # type: ignore
@@ -29,6 +29,6 @@ def setup_telemetry(app) -> None:
         set_logging_format=True,
         logging_format="%(asctime)s %(levelname)s %(name)s %(filename)s:%(lineno)d %(otelTraceID)s %(otelSpanID)s %(message)s",
     )
-    logger.info("Logging instrumentator initialized")
+    logger.info("Logging instrumentator created")
 
     logger.info("OpenTelemetry configuration done")
