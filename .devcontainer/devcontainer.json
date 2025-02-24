@@ -4,7 +4,7 @@
 	"name": "RMR Projection API devcontainer",
 	// Or use a Dockerfile or Docker Compose file. Info: https://containers.dev/guide/dockerfile
 	// "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
-	"dockerComposeFile": "../docker-compose-devcontainer.yml",
+	"dockerComposeFile": "docker-compose-development.yml",
 	"service": "devcontainer",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
