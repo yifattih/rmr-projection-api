@@ -1,9 +1,15 @@
 import numpy as np
 import pytest
+from fastapi.testclient import TestClient
+from main import app
+from models.model import Equations, RMRModel
+from models.time_projection import TimeProjection
 
-from ..models.equations import Equations
-from ..models.model import RMRModel
-from ..models.time_projection import TimeProjection
+
+@pytest.fixture
+def client() -> TestClient:
+    client = TestClient(app)
+    return client
 
 
 @pytest.fixture

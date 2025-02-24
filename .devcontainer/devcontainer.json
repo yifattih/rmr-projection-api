@@ -4,7 +4,7 @@
 	"name": "RMR Projection API devcontainer",
 	// Or use a Dockerfile or Docker Compose file. Info: https://containers.dev/guide/dockerfile
 	// "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
-	"dockerComposeFile": "../docker-compose-devcontainer.yml",
+	"dockerComposeFile": "docker-compose-development.yml",
 	"service": "devcontainer",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
@@ -27,7 +27,7 @@
 		"ghcr.io/dhoeric/features/act:1": {}
     },
 
-    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}"
+    "postStartCommand": "sudo chown -R vscode /workspaces/rmr-projection-api && sudo chgrp -R vscode /workspaces/rmr-projection-api"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

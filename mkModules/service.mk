@@ -5,8 +5,9 @@ run: ##	Run the service
 ##	|	$ make run
     @ echo
     @ $(call headercan,"SERICE RUNNING")
+    @ cd service
     @ export ENV="dev"; \
-	honcho start -d service -f Procfile
+	honcho start -f Procfile --no-prefix
     @ echo
 
 build: ## Build the service
