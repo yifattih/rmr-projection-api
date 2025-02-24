@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException, Response, status
 from models.metadata import Metadata
 from models.model import RMRModel
 from models.schemas import HealthStatus, InputData, OutputData
+from otel import setup_telemetry, meter
 
 rmr_model = RMRModel()
 start_time_utc = datetime.now(timezone.utc)  # Store the time the api starts
@@ -16,6 +17,8 @@ app = FastAPI(
     license_info=Metadata.license_info,
     openapi_tags=Metadata.tags,
 )
+
+setup_telemetry(app)
 
 
 @app.get("/", tags=["Root"])
