@@ -46,4 +46,4 @@ ENV ENV="prod"
 EXPOSE 8000
 
 # Start the application
-CMD ["honcho", "start"]
+CMD ["honcho", "start", "--no-prefix"]
