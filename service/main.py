@@ -1,10 +1,9 @@
 from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException, Response, status
-from prometheus_fastapi_instrumentator import Instrumentator
-
 from metadata import Metadata
 from models.model import RMRModel
+from prometheus_fastapi_instrumentator import Instrumentator
 from schemas import HealthStatus, InputData, OutputData
 
 rmr_model = RMRModel()
