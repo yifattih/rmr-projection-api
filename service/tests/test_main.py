@@ -1,12 +1,12 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from ..main import app
+# from ..main import app
 
-client = TestClient(app)
+# client = TestClient(app)
 
 
-def test_root_endpoint() -> None:
+def test_root_endpoint(client) -> None:
     """Test for root endpoint"""
     response = client.get("/")
     assert response.status_code == 200
@@ -14,7 +14,7 @@ def test_root_endpoint() -> None:
     assert "Welcome to the RMR API" in response.json()["message"]
 
 
-def test_invalid_endpoint() -> None:
+def test_invalid_endpoint(client) -> None:
     """Test for invalid endpoint"""
     response = client.get("/invalid")
     assert response.status_code == 404
@@ -122,7 +122,7 @@ def test_invalid_endpoint() -> None:
         ),
     ],
 )
-def test_calculate_rmr(input_data, expected_status, type) -> None:
+def test_calculate_rmr(input_data, expected_status, type, client) -> None:
     f"""Test for /rmr/ endpoint with ${type}"""
     response = client.post("/rmr/", json=input_data)
     assert response.status_code == expected_status
@@ -132,7 +132,7 @@ def test_calculate_rmr(input_data, expected_status, type) -> None:
         assert "time_projection" in data
 
 
-def test_health_check() -> None:
+def test_health_check(client) -> None:
     """Test for /health endpoint"""
     response = client.get("/metrics")
     assert response.status_code == 200

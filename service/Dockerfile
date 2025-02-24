@@ -36,8 +36,7 @@ COPY --from=builder /root/.local /home/yifattih/.local
 ENV PATH="/home/yifattih/.local/bin:$PATH"
 
 # Copy only necessary application files
-COPY src/ /service/src/
-COPY Procfile /service/
+COPY . /service
 
 # Add variable for Procfile execution via honcho
 ENV ENV="prod"

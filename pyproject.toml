@@ -19,6 +19,6 @@ exit-zero = true
 [tool.pytest.ini_options]
 addopts = [
     "--pspec",
-    "--cov=src",
+    "--cov=service",
     "--cov-report=term-missing"
 ]
