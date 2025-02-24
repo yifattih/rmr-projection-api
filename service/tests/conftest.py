@@ -1,7 +1,6 @@
 import numpy as np
 import pytest
 from fastapi.testclient import TestClient
-
 from main import app
 from models.model import Equations, RMRModel
 from models.time_projection import TimeProjection
