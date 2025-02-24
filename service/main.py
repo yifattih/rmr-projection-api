@@ -1,10 +1,10 @@
 from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException, Response, status
-from metadata import Metadata
+from models.metadata import Metadata
 from models.model import RMRModel
 from prometheus_fastapi_instrumentator import Instrumentator
-from schemas import HealthStatus, InputData, OutputData
+from models.schemas import HealthStatus, InputData, OutputData
 
 rmr_model = RMRModel()
 start_time_utc = datetime.now(timezone.utc)  # Store the time the api starts
