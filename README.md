@@ -8,8 +8,6 @@ The RMR Projection Web App helps users calculate their Resting Metabolic Rate (R
 ## Table of Contents
 1. [Getting Started](#getting-started)
 2. [Features](#features)
-3. [Contribution Guide](#contribution-guide)
-4. [Code of Conduct](#code-of-conduct)
 5. [Technical Overview](#technical-overview)
 6. [Future Work](#future-work)
 7. [License](#license)
@@ -40,17 +38,6 @@ How to Use the Application
 - **Responsive UI**: Modern and intuitive interface for seamless usage across devices
 - **Microservices Architecture**: Backend and frontend services operate independently, ensuring scalability and maintainability
 - **Deployed on Google Cloud Platform**: Ensures reliability and performance
-
----
-
-## Contribution Guide
-### How to Contribute
-Contributions to enhance features, fix bugs, and improve documentation are always welcome
-For seamless and effective cnontribution please follow the [Contribution Guidelines](CONTRIBUTING.md)
-
-### Code of Conduct
-- Be respectful and constructive in communication
-- Adhere to the [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ---
 
