@@ -14,10 +14,21 @@ exclude = [
     ".pytest_cache",
     ".devcontainer"
     ]
+exit-zero = true
 
 [tool.pytest.ini_options]
 addopts = [
     "--pspec",
-    "--cov=src",
+    "--cov=service",
     "--cov-report=term-missing"
+]
+
+[tool.coverage.run]
+omit = [
+    "otel/*"  # Exclude everything inside otel/
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
 ]

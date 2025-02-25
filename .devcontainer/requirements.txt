@@ -17,14 +17,12 @@ pylint==2.14.0
 pytest==8.3.4
 pytest-cov==6.0.0
 pytest-pspec==0.0.4
+httpx==0.28.1
 
 # Code quality
 flake8==7.1.1
-flake8-pyproject=1.2.3
+flake8-pyproject==1.2.3
 black==25.1.0
 
 # Code Coverage
 coverage==7.6.10
-
-# Prometheus metrics instrumentation dependencies
-prometheus-fastapi-instrumentator==7.0.2

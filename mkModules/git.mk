@@ -12,45 +12,38 @@ gst: ## Show a git status glimpse
 ##  |   $ make status
 ##
     @ echo
-    @ $(call headercan,"CHANGES")
-    @ changes="$(shell git diff --color --stat HEAD | sed '$d; s/^ //')"
+    @ $(call headercan,"SUMMARY --- FILES CHANGES")
+    @ changes="$(shell git add -N . && git diff --color --stat HEAD | sed '$d; s/^ //')"
     @ if [ -z "$$changes" ]; then \
-        $(call inform,"No file changes!"); \
+        $(call inform,"No file changes!") \
+		&& echo \
+		&& exit 0; \
     else \
-        echo $$changes;
+		for file in $(shell git status -s | grep "^..* " | sed "s/^.. //g"); do git diff --color --stat HEAD "$$file" | sed '$d; s/^ //' | head -n 1; done; \
+		git reset . --quiet
     fi
     @ echo
-    @ $(call headercan,"FILES SUMMARY")
-    @ $(call keyvaluecan,"Modified",$(shell git status -s | grep "^.*M " | sed "s/^.M / /g"))
-    @ $(call keyvaluecan,"Staged",$(shell git status -s | grep -e "^A.*" -e "^M.*" | grep -v "^.*D" | sed -e "s/^A.* / /g" -e "s/^M.* / /g"))
-    @ $(call keyvaluecan,"Deleted",$(shell git status -s | grep "^.*D " | sed "s/^.*D / /g"))
-    @ $(call keyvaluecan,"Untracked",$(shell git status -s | grep "??" | sed "s/??/ /g"))
-    @ echo
 
-glog: ## Show custom git log
-##  |Usage:
-##  |   $ make log <int: number of entries | optional>
+glog: ## Displays a Git log in a user-friendly format following the Conventional Commits standard
+# 	---------------
+##  |USAGE:
+##  |   $ make log <entries>
+# 	---------------
+##	|Parameters:
+##	|	entries: integer | default = 5
+# 	|		Number of entries to display
 ##
     @ echo
     @ $(call headercan,"COMMITS")
     @ # Script
     if [ -z "$(ARG1)" ]; then \
-        while true; do \
-            $(call prompt,"How many entries?"); \
-            if ! echo "$$input" | grep -qE "^[0-9]+$$"; then \
-                $(call err,"Must be an integer!!!") \
-                && echo; \
-            else \
-                echo; \
-                git --no-pager log -n "$$input" --abbrev-commit --format=format:"%s-- " \
-                | sed "s/-- /\n/" \
-                | sed -r \
-                -e 's/([^(:]*)(\([^)]*\))(:)(.*)/$(call COMMITFORMAT)/g' \
-                | tac; \
-                echo; \
-                exit 0; \
-            fi; \
-        done; \
+		echo; \
+		git --no-pager log -n 5 --abbrev-commit --format=format:"%s-- " \
+		| sed "s/-- //" \
+		| sed -r \
+		-e 's/([^(:]*)(\([^)]*\))(:)(.*)/$(call COMMITFORMAT)/g' \
+		| tac; \
+		echo; \
     elif ! echo "$(ARG1)" | grep -qE '^[0-9]+$$'; then \
         $(call err,"Number of entries must be an integer!!!")
         while true; do \
@@ -61,7 +54,7 @@ glog: ## Show custom git log
             else \
                 echo; \
                 git --no-pager log -n "$$input" --abbrev-commit --format=format:"%s-- " \
-                | sed "s/-- /\n/" \
+                | sed "s/-- //" \
                 | sed -r \
                 -e 's/([^(:]*)(\([^)]*\))(:)(.*)/$(call COMMITFORMAT)/g' \
                 | tac; \
@@ -71,7 +64,7 @@ glog: ## Show custom git log
         done; \
     else \
         git --no-pager log -n "$(ARG1)" --abbrev-commit --format=format:"%s-- " \
-		| sed "s/-- /\n/" \
+		| sed "s/-- //" \
         | sed -r \
         -e 's/([^(:]*)(\([^)]*\))(:)(.*)/$(call COMMITFORMAT)/g' \
         | tac; \
@@ -82,37 +75,31 @@ gc: ## Stage files, prepare and execute cit
 ##  |Usage:
 ##  |   $ make gcommmit
 ##
-    @ echo
     @ is_change="$(shell git status --porcelain | sed "s/.* //")"
     @ if [ -z "$$is_change" ]; then \
-        $(call inform,"No files to commit!!!"); \
+		echo \
+        && $(call inform,"No files to commit!!!"); \
         echo; \
         exit 0; \
-    elif [ "$$is_change" ]; then \
-        $(call headercan,"FILES TO STAGE"); \
-    fi
-    @ git diff --color --stat HEAD | sed '$d; s/^ //' && echo
-    @ while true; do \
-        $(call prompt,"Enter filename (. to add all)") && filename="$$input"; \
-        if [ "$$input" == "exit" ]; then \
-            $(call inform,"Commit canceled!!!") \
-            && echo \
-            && exit 0; \
-        elif [ "$$input" == "." ]; then \
-            git add .; \
-            $(call inform,"All files were staged") \
-            && break; \
-        else \
-            { #try
-                git add "$$input" 2>/dev/null \
-                && $(call inform,"File "$$input" is staged") \
-                && break; \
-            } || { #catch
-                    $(call err, File "$$input" do not exist!); \
-            } \
-            # git add "$$input" 2>/dev/null || $(call err, File "$$input" do not exist!);
-        fi;
-    done;
+	fi
+    @ $(MAKE) --silent gst
+    $(call headercan,"ENTER NUMBER OF FILE")
+    @ select filename in $(shell echo "Exit" && git status -s | cut -c4-); do \
+		if [[ "$$filename" == "Exit" ]]; then \
+			echo \
+			&& $(call inform,"Commit canceled!") \
+			&& echo \
+			&& exit 0; \
+		fi; \
+		echo; \
+		if [[ -n "$$filename" ]]; then \
+			$(call keyvaluecan,"Staged",$$filename) \
+			&& git add $$filename \
+			&& break; \
+		else \
+			$(call err,"Invalid selection"); \
+		fi; \
+	done
     @ echo
     @ $(call headercan,"COMMIT MESSAGE")
     @ $(call inform,"Message construction based on the AngularJS commit convention")
@@ -190,6 +177,9 @@ gcd: ## Delete last commit message
     @ echo
 
 gbr: ## Prints Git branches
+##  |Usage:
+##  |   $ make gbr
+##
     @ echo
     @ CURRENT+="$(shell git branch --show-current)"
     @ LOCAL+="$(shell git branch --format="%(refname:short)")"
@@ -198,3 +188,39 @@ gbr: ## Prints Git branches
     @ $(call keyvaluecan,"Current",$$CURRENT)
     @ $(call keyvaluecan,"Local",$$LOCAL)
     @ $(call keyvaluecan,"Remote",$$REMOTE)
+    @ echo
+
+
+gbrn: ## Create a new branch
+##  |Usage:
+##  |   $ make gbrn <string: branch name>
+##
+    @ echo
+    @ $(call headercan,"NEW BRANCH")
+    @ while true; do \
+		$(call prompt,"Branch name") && branch="$$input"; \
+		if [ "$$branch" == "exit" ]; then \
+			$(call inform,"Branch creation canceled!") \
+			&& echo \
+			&& exit 0; \
+		elif [ "$$branch" == "" ]; then \
+			$(call err,"Branch name cannot be empty!"); \
+		else \
+			git checkout -b "$$branch"; \
+			$(call inform,"Branch $$branch created!") \
+			&& echo \
+			&& exit 0; \
+		fi; \
+	done;
+    @ echo
+
+gbrp: ## Push current branch to remote
+##  |Usage:
+##  |   $ make gbrp
+##
+    @ echo
+    @ $(call headercan,"PUSH BRANCH")
+    @ branch="$(shell git branch --show-current)"
+    @ $(call keyvaluecan,"Branch",$$branch)
+    @ git push --set-upstream origin $$branch
+    @ echo

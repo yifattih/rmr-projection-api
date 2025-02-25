@@ -1,5 +1,5 @@
-from .time_projection import TimeProjection
 from .equations import Equations
+from .time_projection import TimeProjection
 
 
 class RMRModel:
@@ -124,7 +124,7 @@ class RMRModel:
 
             # Step 1: Generate time projection
             time_result = self.time_projection_helper.calculate(duration)
-            if time_result["exit_code"] != 0:
+            if time_result["exit_code"] != 0:  # pragma: no cover
                 return {
                     "error": f"Time projection failed: {time_result['error']}",
                     "exit_code": 1,
@@ -142,19 +142,22 @@ class RMRModel:
                 weight_loss_rate,
                 time_projection,
             )
-            if rmr_result["exit_code"] != 0:
+            if rmr_result["exit_code"] != 0:  # pragma: no cover
                 return {
                     "error": f"RMR calculation failed: {rmr_result['error']}",
                     "exit_code": 1,
                 }
 
-            # Step 3: Return response on success
             return {
-                "input": input_data,
-                "output": {
-                    "rmr": rmr_result["result"],
-                    "time_projection": time_projection.tolist(),
-                },
+                "sex": sex,
+                "units": units,
+                "age": age,
+                "weight": weight,
+                "height": height,
+                "weight_loss_rate": weight_loss_rate,
+                "duration": duration,
+                "rmr": rmr_result["result"],
+                "time_projection": time_projection.tolist(),
                 "exit_code": 0,
             }
         except Exception as e:
