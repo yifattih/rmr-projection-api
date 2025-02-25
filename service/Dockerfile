@@ -38,9 +38,7 @@ ENV PATH="/home/yifattih/.local/bin:$PATH"
 # Copy only necessary application files
 COPY Procfile main.py /service/
 COPY models /service/models
-
-# Add variable for Procfile execution via honcho
-ENV ENV="prod"
+COPY otel /service/otel
 
 # Expose the application port
 EXPOSE 8000

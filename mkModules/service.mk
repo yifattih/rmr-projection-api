@@ -1,4 +1,4 @@
-.PHONY: run build
+.PHONY: run build push up down
 
 run: ##	Run the service
 ##	|Usage:
@@ -6,8 +6,7 @@ run: ##	Run the service
     @ echo
     @ $(call headercan,"SERICE RUNNING")
     @ cd service
-    @ export ENV="dev"; \
-	honcho start -f Procfile --no-prefix
+    @ honcho start -f Procfile --no-prefix
     @ echo
 
 build: ## Build the service
@@ -25,5 +24,11 @@ push: ## Push the service image to the Docker Hub repository
     @ echo
     @ $(call headercan,"PUSHING SERVICE TO DOCKER HUB")
     @ docker push $(ARG1)
-    @ $(call inform,"Service pushed successfully")
+    @ $(call inform,"Service pushed successfully")	
     @ echo
+
+up: ## Orchestrate containers using root directory docker compose file 
+    @ docker-compose --file docker-compose.yaml up --build
+
+down: ## Stop and delete containers and images using root directory docker compose file
+    @ docker-compose --file docker-compose.yaml down --remove-orphans --volumes --rmi all

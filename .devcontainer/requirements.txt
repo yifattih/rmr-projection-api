@@ -26,6 +26,3 @@ black==25.1.0
 
 # Code Coverage
 coverage==7.6.10
-
-# Prometheus metrics instrumentation dependencies
-prometheus-fastapi-instrumentator==7.0.2

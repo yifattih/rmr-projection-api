@@ -129,5 +129,5 @@ def test_calculate_rmr(input_data, expected_status, type, client) -> None:
 
 def test_health_check(client) -> None:
     """Test for /health endpoint"""
-    response = client.get("/metrics")
+    response = client.get("/health")
     assert response.status_code == 200
