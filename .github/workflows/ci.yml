@@ -144,12 +144,20 @@ jobs:
             scan-type: "fs"
             scan-ref: '.'
             ignore-unfixed: true
-            format: "json"
-            output: "trivy-dependency-report.json"
+            format: "sarif"
+            output: "trivy-dependency-report.sarif"
             severity: "CRITICAL,HIGH"
         - name: Upload Trivy reports as an artifact
           uses: actions/upload-artifact@v4
           with:
             name: trivy-reports
-            path: |
-              trivy-dependency-report.json
+            path: trivy-dependency-report.sarif
+            if-no-files-found: warn
+            retention-days: 30
+        - name: Run SonarCloud Analysis
+          uses: SonarSource/sonarcloud-github-action@v3.1.0
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          with:
+            args: >
+              -Dsonar.externalIssuesReportPaths=trivy-dependency-report.sarif,trivy-container-report.sarif
