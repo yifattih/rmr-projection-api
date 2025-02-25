@@ -33,7 +33,7 @@ class TimeProjection:
         """
         try:
             if end < 0:
-                raise ValueError("Duration must be non-negative")
+                raise ValueError("Duration must be non-negative.")
             return {"result": np.arange(0, end + 1), "exit_code": 0}
         except Exception as e:
             return {"error": str(e), "exit_code": 1}
