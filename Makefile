@@ -50,4 +50,3 @@ help:
 include mkModules/colors.mk
 include mkModules/cans.mk
 include mkModules/git.mk
-include mkModules/service.mk
