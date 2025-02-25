@@ -13,13 +13,14 @@ gst: ## Show a git status glimpse
 ##
     @ echo
     @ $(call headercan,"SUMMARY --- FILES CHANGES")
-    @ changes="$(shell git diff --color --stat HEAD | sed '$d; s/^ //')"
+    @ changes="$(shell git add -N . && git diff --color --stat HEAD | sed '$d; s/^ //')"
     @ if [ -z "$$changes" ]; then \
         $(call inform,"No file changes!") \
 		&& echo \
 		&& exit 0; \
     else \
 		for file in $(shell git status -s | grep "^..* " | sed "s/^.. //g"); do git diff --color --stat HEAD "$$file" | sed '$d; s/^ //' | head -n 1; done; \
+		git reset . --quiet
     fi
     @ echo
 
