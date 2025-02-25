@@ -92,7 +92,7 @@ gc: ## Stage files, prepare and execute cit
 		fi; \
 		echo; \
 		if [[ -n "$$filename" ]]; then \
-			$(call keyvaluecan,"Staged:",$$filename) \
+			$(call keyvaluecan,"Staged",$$filename) \
 			&& git add $$filename \
 			&& break; \
 		else \
