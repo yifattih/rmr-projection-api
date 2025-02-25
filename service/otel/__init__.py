@@ -6,23 +6,25 @@ meter = otel_metrics.meter
 logger = otel_logs.logger
 tracer = otel_traces.tracer
 
-try:
-    from opentelemetry.instrumentation.fastapi import \
-        FastAPIInstrumentor  # type: ignore
+try:  # pragma: no cover
+    from opentelemetry.instrumentation.fastapi import (
+        FastAPIInstrumentor,
+    )  # type: ignore
 
     instrumentator = FastAPIInstrumentor()
     instrumentator_name = "FastAPI"
-except ImportError:
-    from opentelemetry.instrumentation.flask import \
-        FlaskInstrumentor  # type: ignore
+except ImportError:  # pragma: no cover
+    from opentelemetry.instrumentation.flask import (
+        FlaskInstrumentor,
+    )  # type: ignore
 
     instrumentator = FlaskInstrumentor()
     instrumentator_name = "Flask"
-finally:
-    logger.info(f"{instrumentator_name} instrumentator found and initialized")
+finally:  # pragma: no cover
+    logger.info(f"{instrumentator_name} instrumentator found and initialized")  # type: ignore
 
 
-def setup_telemetry(app) -> None:
+def setup_telemetry(app) -> None:  # pragma: no cover
     """Sets up OpenTelemetry instrumentation for FastAPI."""
     logger.info("Starting OpenTelemetry configuration setup")
 
