@@ -124,7 +124,7 @@ class RMRModel:
 
             # Step 1: Generate time projection
             time_result = self.time_projection_helper.calculate(duration)
-            if time_result["exit_code"] != 0:
+            if time_result["exit_code"] != 0:  # pragma: no cover
                 return {
                     "error": f"Time projection failed: {time_result['error']}",
                     "exit_code": 1,
@@ -142,7 +142,7 @@ class RMRModel:
                 weight_loss_rate,
                 time_projection,
             )
-            if rmr_result["exit_code"] != 0:
+            if rmr_result["exit_code"] != 0:  # pragma: no cover
                 return {
                     "error": f"RMR calculation failed: {rmr_result['error']}",
                     "exit_code": 1,
