@@ -6,9 +6,7 @@ from models.model import RMRModel
 from models.schemas import HealthStatus, InputData, OutputData
 from otel import logger, meter, setup_telemetry, tracer
 
-service_start_time_utc = datetime.now(
-    timezone.utc
-)  # Store the time the api starts
+service_start_time_utc = datetime.now(timezone.utc)
 
 service = FastAPI(
     title=Metadata.title,
@@ -104,7 +102,7 @@ async def calculate_rmr(input_data: InputData, response: Response):
             unit="seconds",
         ).record(latency)
 
-        if result["exit_code"] != 0:
+        if result["exit_code"] != 0:  # pragma: no cover
             logger.error(
                 "RMR calculation failed with error: %s", result["error"]
             )
