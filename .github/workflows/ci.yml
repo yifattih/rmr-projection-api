@@ -149,12 +149,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r service/requirements.txt
 
-      - name: Print working directory before snyk scan to check if snyk report is created
-        run: pwd
-
-      - name: List files before snyk scan to check if snyk report is created
-        run: ls -lah
-
       - name: Run Snyk to check for dependencies vulnerabilities
         uses: snyk/actions/python@master
         env:
@@ -164,9 +158,6 @@ jobs:
             --file=service/requirements.txt
             --severity-threshold=low
             --sarif-file-output=snyk.sarif
-
-      - name: List files after snyk scan to check if snyk report is created
-        run: ls -lah
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
