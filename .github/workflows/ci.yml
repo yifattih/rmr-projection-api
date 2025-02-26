@@ -168,7 +168,7 @@ jobs:
       - name: List files after snyk scan to check if snyk report is created
         run: ls -lah
 
-      # - name: Upload result to GitHub Code Scanning
-      #   uses: github/codeql-action/upload-sarif@v3
-      #   with:
-      #     sarif_file: /home/runner/work/rmr-projection-api/rmr-projection-api/snyk.sarif
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk.sarif
