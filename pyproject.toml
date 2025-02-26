@@ -40,6 +40,7 @@ description = "A RESTful API for calculating Resting Metabolic Rate using Miffli
 authors = ["Yifattih <yifattih@proton.me>"]
 
 [tool.poetry.dependencies]
+python = "^3.12"
 numpy = "^2.2.2"
 fastapi = "^0.115.7"
 pydantic = "^2.10.6"
