@@ -37,9 +37,8 @@ glog: ## Displays a Git log in a user-friendly format following the Conventional
     @ $(call headercan,"COMMITS")
     @ # Script
     if [ -z "$(ARG1)" ]; then \
-		echo; \
 		git --no-pager log -n 5 --abbrev-commit --format=format:"%s-- " \
-		| sed "s/-- //" \
+		| sed "s/-- /\n/g" \
 		| sed -r \
 		-e 's/([^(:]*)(\([^)]*\))(:)(.*)/$(call COMMITFORMAT)/g' \
 		| tac; \
@@ -54,7 +53,7 @@ glog: ## Displays a Git log in a user-friendly format following the Conventional
             else \
                 echo; \
                 git --no-pager log -n "$$input" --abbrev-commit --format=format:"%s-- " \
-                | sed "s/-- //" \
+                | sed "s/-- /\n/" \
                 | sed -r \
                 -e 's/([^(:]*)(\([^)]*\))(:)(.*)/$(call COMMITFORMAT)/g' \
                 | tac; \
@@ -64,7 +63,7 @@ glog: ## Displays a Git log in a user-friendly format following the Conventional
         done; \
     else \
         git --no-pager log -n "$(ARG1)" --abbrev-commit --format=format:"%s-- " \
-		| sed "s/-- //" \
+		| sed "s/-- /\n/" \
         | sed -r \
         -e 's/([^(:]*)(\([^)]*\))(:)(.*)/$(call COMMITFORMAT)/g' \
         | tac; \
@@ -84,12 +83,19 @@ gc: ## Stage files, prepare and execute cit
 	fi
     @ $(MAKE) --silent gst
     $(call headercan,"ENTER NUMBER OF FILE")
-    @ select filename in $(shell echo "Exit" && git status -s | cut -c4-); do \
+    @ select filename in $(shell git status -s | cut -c4- && echo "." && echo "Exit"); do \
 		if [[ "$$filename" == "Exit" ]]; then \
 			echo \
 			&& $(call inform,"Commit canceled!") \
 			&& echo \
 			&& exit 0; \
+		fi; \
+		echo; \
+		if [[ "$$filename" == "." ]]; then \
+			echo \
+			&& $(call keyvaluecan,"Staged","All") \
+			&& git add . \
+			&& break; \
 		fi; \
 		echo; \
 		if [[ -n "$$filename" ]]; then \
