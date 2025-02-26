@@ -34,7 +34,7 @@ exclude_lines = [
 ]
 
 [tool.poetry]
-name = "rmr-api"
+name = "service"
 version = "0.1.0"
 description = "A RESTful API for calculating Resting Metabolic Rate using Mifflin-St. Jeor equations"
 authors = ["Yifattih <yifattih@proton.me>"]
