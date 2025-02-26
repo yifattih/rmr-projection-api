@@ -157,7 +157,6 @@ jobs:
           args: >
             --file=service/requirements.txt
             --severity-threshold=low
-            --all-projects
             --sarif-file-output=/github/workspace/snyk.sarif
       
       - name: Upload result to GitHub Code Scanning
