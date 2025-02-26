@@ -139,12 +139,25 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r service/requirements.txt
+
       - name: Run Snyk to check for dependencies vulnerabilities
         uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --file=service/requirements.txt --severity-threshold=high --skip-unresolved --sarif-file-output=snyk.sarif
+          args: |
+            --file=service/requirements.txt
+            --severity-threshold=low
+            --sarif-file-output=snyk.sarif
       
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
