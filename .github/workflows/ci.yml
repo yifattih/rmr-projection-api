@@ -157,9 +157,11 @@ jobs:
           args: |
             --file=service/requirements.txt
             --severity-threshold=low
-            --sarif-file-output=snyk.sarif
+            --all-projects
+            --sarif-file-output=/home/runner/work/rmr-projection-api/rmr-projection-api/snyk.sarif
       
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
+          checkout_path: /github/workspace
           sarif_file: snyk.sarif
