@@ -32,3 +32,9 @@ omit = [
 exclude_lines = [
     "pragma: no cover",
 ]
+
+[tool.poetry]
+name = "rmr-api"
+version = "0.1.0"
+description = "A RESTful API for calculating Resting Metabolic Rate using Mifflin-St. Jeor equations"
+authors = ["Yifattih <yifattih@proton.me>"]
