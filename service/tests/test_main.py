@@ -118,8 +118,8 @@ def test_invalid_endpoint(client) -> None:
     ],
 )
 def test_calculate_rmr(input_data, expected_status, type, client) -> None:
-    f"""Test for /rmr/ endpoint with ${type}"""
-    response = client.post("/rmr/", json=input_data)
+    f"""Test for /projections endpoint with ${type}"""
+    response = client.post("/projections", json=input_data)
     assert response.status_code == expected_status
     if expected_status == 200:
         data = response.json()
