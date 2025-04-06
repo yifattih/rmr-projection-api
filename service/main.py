@@ -72,13 +72,13 @@ async def root():
         return response
 
 
-@service.post("/rmr/", tags=["RMR"], response_model=OutputData)
+@service.post("/projections", tags=["projections"], response_model=OutputData)
 async def calculate_rmr(input_data: InputData, response: Response):
     """
     Endpoint to calculate RMR over a time projection using Mifflin-St. Jeor
     equations.
     """
-    with tracer.start_as_current_span("rmr_span"):
+    with tracer.start_as_current_span("projections_span"):
         logger.info(
             "RMR calculation endpoint called with input data: %s", input_data
         )
@@ -97,7 +97,7 @@ async def calculate_rmr(input_data: InputData, response: Response):
         latency = (end_time - start_time).total_seconds()
 
         meter.create_histogram(
-            name="rmr_calculation_latency",
+            name="calculation_latency",
             description="Measures the latency of RMR calculations",
             unit="seconds",
         ).record(latency)
@@ -107,7 +107,7 @@ async def calculate_rmr(input_data: InputData, response: Response):
                 "RMR calculation failed with error: %s", result["error"]
             )
             meter.create_counter(
-                name="rmr_calculation_failures",
+                name="calculation_failures",
                 description="Counts the number of failed RMR calculations",
                 unit="failures",
             ).add(1)
@@ -115,7 +115,7 @@ async def calculate_rmr(input_data: InputData, response: Response):
 
         logger.info("RMR calculation successful with result: %s", result)
         meter.create_counter(
-            name="rmr_calculation_successes",
+            name="calculation_successes",
             description="Counts the number of successful RMR calculations",
             unit="successes",
         ).add(1)
