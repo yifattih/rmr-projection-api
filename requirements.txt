@@ -1,0 +1,18 @@
+# Data manipulation dependencies
+numpy==2.2.2
+
+# Build dependencies
+fastapi==0.115.7
+pydantic==2.10.6
+
+# Runtime dependencies
+uvicorn==0.34.0
+honcho==2.0.0
+
+# Instrumentation dependencies
+opentelemetry-api==1.30.0
+opentelemetry-sdk==1.30.0
+opentelemetry-exporter-otlp==1.30.0
+opentelemetry-instrumentation==0.51b0
+opentelemetry-instrumentation-fastapi==0.51b0
+opentelemetry-instrumentation-logging==0.51b0
