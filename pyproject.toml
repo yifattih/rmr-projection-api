@@ -19,7 +19,7 @@ exit-zero = true
 [tool.pytest.ini_options]
 addopts = [
     "--pspec",
-    "--cov=service",
+    "--cov=src",
     "--cov-report=term-missing"
 ]
 
@@ -34,7 +34,7 @@ exclude_lines = [
 ]
 
 [tool.poetry]
-name = "service"
+name = "RMR-Projection-RESTful-API"
 version = "0.1.0"
 description = "A RESTful API for calculating Resting Metabolic Rate using Mifflin-St. Jeor equations"
 authors = ["Yifattih <yifattih@proton.me>"]
