@@ -20,18 +20,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r service/requirements.txt
-          pip install -r .devcontainer/requirements.txt
+          pip install -r requirements.txt
+          pip install -r requirements.dev.txt
 
       - name: Lint code with Flake8 and generate report
         run: |
           mkdir -p reports
-          flake8 --tee --output-file=reports/flake8-report.txt service
+          flake8 --tee --output-file=reports/flake8-report.txt src
       
       - name: Upload flake8 report as an artifact
         uses: actions/upload-artifact@v4
@@ -52,18 +52,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r service/requirements.txt
-          pip install -r .devcontainer/requirements.txt
+          pip install -r requirements.txt
+          pip install -r requirements.dev.txt
 
       - name: Check code formatting with Black and generate report
         run: |
           mkdir reports
-          black --check --diff service | tee reports/black-report.txt
+          black --check --diff src | tee reports/black-report.txt
   
       - name: Upload black report as an artifact
         uses: actions/upload-artifact@v4
@@ -75,7 +75,7 @@ jobs:
 
       - name: Check code formatting with isort and generate report
         run: |
-          isort --check-only --diff service | tee reports/isort-report.txt
+          isort --check-only --diff src | tee reports/isort-report.txt
       
       - name: Upload isort report as an artifact
         uses: actions/upload-artifact@v4
@@ -97,18 +97,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r service/requirements.txt
-          pip install -r .devcontainer/requirements.txt
+          pip install -r requirements.txt
+          pip install -r requirements.dev.txt
 
       - name: Run tests with Pytest and generate coverage report
         run: |
           mkdir -p reports
-          pytest --cov=service --cov-report=xml --cov-report=term | tee reports/pytest_report.txt
+          pytest --cov=src --cov-report=xml --cov-report=term | tee reports/pytest_report.txt
 
       - name: Upload pytest report as an artifact
         uses: actions/upload-artifact@v4
@@ -143,12 +143,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r service/requirements.txt
+          pip install -r requirements.txt
 
       - name: Run Snyk to check for dependencies vulnerabilities
         uses: snyk/actions/python@master
@@ -156,7 +156,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: >
-            --file=service/requirements.txt
+            --file=requirements.txt
             --severity-threshold=low
             --sarif-file-output=snyk.sarif
 
