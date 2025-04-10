@@ -168,7 +168,6 @@ jobs:
                     -Dsonar.qualitygate.wait=false
                     -Dsonar.python.version=3.13
                     -Dsonar.python.coverage.reportPaths=coverage.xml
-                    -Dsonar.sources=lib/
                     -Dsonar.tests=tests/
                     -Dsonar.test.exclusions=tests/**,.devcontainer/**
                     -Dsonar.verbose=true
