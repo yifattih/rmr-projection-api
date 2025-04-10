@@ -158,7 +158,7 @@ jobs:
             - name: SonarQube quality and security scan and report
               uses: SonarSource/sonarqube-scan-action@v5.1.0
               with:
-                projectBaseDir: /src
+                projectBaseDir: src
                 args: >
                     -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
                     -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
@@ -171,6 +171,7 @@ jobs:
                     -Dsonar.tests=tests/
                     -Dsonar.test.exclusions=tests/**,.devcontainer/**
                     -Dsonar.verbose=true
+                    -Dsonar.scanner.skipSystemTruststore=true
     
     filesystem-security:
         name: Filesystem Security Scan
