@@ -1,10 +1,7 @@
 ---
-name: Docker Hub Courier
+name: Build and Push to Docker Hub
 
 on:
-    push:
-        branches:
-            - dev
     pull_request:
         types:
             - closed
@@ -28,11 +25,8 @@ jobs:
         name: Build Image and Push to Docker Hub
         runs-on: ubuntu-latest
         environment: development
-        permissions:
-            packages: write
-            contents: read
-            attestations: write
-            id-token: write
+        needs: ci-pipeline
+        permissions: write-all
         steps:
             - name: Check out repository
               uses: actions/checkout@v4
