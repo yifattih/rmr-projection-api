@@ -157,13 +157,14 @@ jobs:
 
             - name: SonarQube quality and security scan and report
               uses: SonarSource/sonarqube-scan-action@v5.1.0
+              env:
+                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               with:
                 projectBaseDir: src
                 args: >
                     -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
                     -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
                     -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-                    -Dsonar.token=${{ secrets.SONAR_TOKEN }}
                     -Dsonar.qualitygate.wait=false
                     -Dsonar.python.version=3.13
                     -Dsonar.python.coverage.reportPaths=coverage.xml
