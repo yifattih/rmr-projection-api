@@ -1,12 +1,17 @@
 name: Semantic Release
 
 on:
-  pull_request:
-    types:
-        - closed
-    branches:
-      - main
-      - alpha
+    pull_request:
+        types:
+            - closed
+        branches:
+            - main
+            - alpha
+    push:
+        branches:
+            - main
+            - alpha
+
 
 jobs:
     ci-pipeline:
