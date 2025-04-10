@@ -61,10 +61,3 @@ jobs:
                     @semantic-release/github
                     @semantic-release/changelog
                     @semantic-release/git
-
-            - name: New Release Version
-              if: steps.semantic.outputs.new_release_published == 'true'
-              run: |
-                echo "Last Release Version: ${{ steps.semantic.outputs.last_release_version }}"
-                echo "New Realease Version: ${{ steps.semantic.outputs.new_release_version }}"
-                echo "Release Notes: ${{ steps.semantic.outputs.new_release_notes }}"
