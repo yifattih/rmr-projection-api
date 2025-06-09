@@ -1,0 +1,91 @@
+name: Build and Push Image to GCP Artifact Registry
+run-name: "Build and Push Docker Image to GCP Artifact Registry Repository"
+
+on:
+  workflow_call:
+    inputs:
+        repo_owner:
+            description: The owner of the repository to check out.
+            required: true
+            type: string
+        repo_name:
+            description: The name of the repository to check out.
+            required: true
+            type: string
+        branch:
+            description: The branch to checkout source code.
+            required: true
+            type: string
+        build_args_en:
+            description: The arguments to usin when building image.
+            required: false
+            type: string
+            default: ""
+        image_tag_en:
+            description: The tag of the image to be built and pushed.
+            required: true
+            type: string
+
+jobs:
+    build-push-image:
+        name: Build and Push Image
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                repository: ${{ inputs.repo_owner }}/${{ inputs.repo_name }}
+                ref: ${{ inputs.branch }}
+                path: ${{ inputs.repo_name }}
+
+            - name: Build Image
+              run: |
+                # Download encryption utility
+                curl -L \
+                    https://gist.githubusercontent.com/yifattih/21412007b8432c3068c413c8a89b68fc/raw/ \
+                    -o secure
+                chmod u+x secure
+                
+                # Decrypt image tag
+                image_tag_dec=$(./secure --decrypt --value "${{ inputs.image_tag_en }}" --passphrase "${{ secrets.ENCRYPTION_PASSPHRASE }}")
+
+                if [[ -n "${{ inputs.build_args_en }}" ]]; then
+                    build_args_dec=$(./secure --decrypt --value "${{ inputs.build_args_en }}" --passphrase "${{ secrets.ENCRYPTION_PASSPHRASE }}")
+                    build_args=$(echo "${build_args_dec}" | jq -r 'to_entries[] | "--build-arg \(.key)=\(.value)"' | xargs) 
+
+                   cd ${{ inputs.repo_name }}
+                   # Build with visible steps, warnings, and errors
+                    # DOCKER_BUILDKIT=1 docker build "${build_args}" --progress=plain -t ${image_tag_dec} .
+                    DOCKER_BUILDKIT=1 docker build --build-arg OTLP_ENDPOINT=localhost:4317 --build-arg OTEL_SERVICE_NAME=apigateway --progress=plain -t ${image_tag_dec} .
+                else
+                    cd ${{ inputs.repo_name }}
+                    # Build with visible steps, warnings, and errors
+                    DOCKER_BUILDKIT=1 docker build --progress=plain -t ${image_tag_dec} .
+                fi
+
+            - name: Authenticate to Google Cloud
+              uses: google-github-actions/auth@v2.1.7
+              with:
+                credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+            - name: Set up Cloud SDK
+              uses: 'google-github-actions/setup-gcloud@v2.1.4'
+                
+            - name: Configure Docker to use gcloud
+              run: gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
+                
+            - name: Push Image
+              run: |
+                # Download encryption utility
+                curl -L \
+                    https://gist.githubusercontent.com/yifattih/21412007b8432c3068c413c8a89b68fc/raw/ \
+                    -o secure
+                chmod u+x secure
+
+                # Decrypt image tag
+                image_tag_dec=$(./secure --decrypt --value "${{ inputs.image_tag_en }}" --passphrase "${{ secrets.ENCRYPTION_PASSPHRASE }}")
+                
+                # Push with only meaningful output
+                docker push ${image_tag_dec} \
+                    | grep -E "(pushed|waiting|layer|digest|error|denied|unauthorized)"
