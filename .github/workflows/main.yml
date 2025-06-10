@@ -16,8 +16,32 @@ jobs:
             - name: Extract Service Name
               id: extract
               run: |
-                name=${{ github.event.repository.name }}
-                echo "SERVICE_NAME=${name#*${{ env.SERVICE_NAME_PREFIX }}}" >> ${GITHUB_OUTPUT}
+                repository_name=${{ github.event.repository.name }}
+                echo "SERVICE_NAME=${repository_name#*${{ env.SERVICE_NAME_PREFIX }}}" >> ${GITHUB_OUTPUT}
+    extract-environment-name:
+        name: Extract Environment Name
+        runs-on: ubuntu-latest
+        outputs:
+            ENVIRONMENT: ${{ steps.extract.outputs.ENVIRONEMNT }}
+        steps:
+            - name: Extract Environment Name
+              id: extract
+              run: |
+                branch=${{ github.ref_name }}
+                case "${branch}" in
+                    main}
+                        echo "ENVIRONMENT=production" >> ${GITHUB_OUTPUT}
+                        ;;
+                    alpha)
+                        echo "ENVIRONMENT=alpha" >> ${GITHUB_OUTPUT}
+                        ;;
+                    dev)
+                        echo "ENVIRONMENT=development" >> ${GITHUB_OUTPUT}
+                        ;;
+                    *)
+                        echo "No specific environment set for branch ${branch}"
+                        ;;
+                    esac
     quality-security:
         name: Code Quality, Unit Tests, Security Checks, and Reports
         uses: ./.github/workflows/quality-security.yml
@@ -38,10 +62,11 @@ jobs:
     push-gar:
         name: Build Docker Image and Push to Google Artifact Registry
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha'
-        needs: [extract-service-name, release]
+        needs: [extract-service-name,  extract-environment-name,release]
         uses: ./.github/workflows/push-gar.yml
         with:
             SERVICE_NAME: ${{ needs.extract-service-name.outputs.SERVICE_NAME }}
+            ENVIRONMENT: ${{ needs.extract-environment-name.outputs.ENVIRONMENT}}
             RELEASE_TAG: ${{ needs.release.outputs.RELEASE_TAG }}
         secrets: inherit
     dispatch:
