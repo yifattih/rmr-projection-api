@@ -1,0 +1,55 @@
+name: Semantic Release
+run-name: CI Pipeline
+on:
+    push:
+        branches:
+            - '**'
+env:
+    SERVICE_NAME_PREFIX: "rmr-projection-"
+jobs:
+    extract-service-name:
+        name: Extract Service Name
+        runs-on: ubuntu-latest
+        outputs:
+            SERVICE_NAME: ${{ steps.extract.outputs.SERVICE_NAME }}
+        steps:
+            - name: Extract Service Name
+              id: extract
+              run: |
+                name=${{ github.event.repository.name }}
+                echo "SERVICE_NAME=${name#*${{ env.SERVICE_NAME_PREFIX }}}" >> ${GITHUB_OUTPUT}
+    quality-security:
+        name: Code Quality, Unit Tests, Security Checks, and Reports
+        uses: ./.github/workflows/quality-security.yml
+        secrets: inherit
+    push-docker-hub:
+        name: Build Docker Image and Push to Docker Hub
+        if: github.ref == 'refs/heads/dev'
+        needs: [extract-service-name, quality-security]
+        uses: ./.github/workflows/push-docker-hub.yml
+        with:
+            SERVICE_NAME: ${{ needs.extract-service-name.outputs.SERVICE_NAME }}
+        secrets: inherit
+    release:
+        name: Make Release
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha'
+        needs: quality-security
+        uses: ./.github/workflows/release.yml
+    push-gar:
+        name: Build Docker Image and Push to Google Artifact Registry
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha'
+        needs: [extract-service-name, release]
+        uses: ./.github/workflows/push-gar.yml
+        with:
+            SERVICE_NAME: ${{ needs.extract-service-name.outputs.SERVICE_NAME }}
+            RELEASE_TAG: ${{ needs.release.outputs.RELEASE_TAG }}
+        secrets: inherit
+    dispatch:
+        name: Dispatch Data to IaC Repository
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha'
+        needs: [extract-service-name, release, push-gar]
+        uses: ./.github/workflows/dispatch.yml
+        with:
+            SERVICE_NAME: ${{ needs.extract-service-name.outputs.SERVICE_NAME }}
+            RELEASE_TAG: ${{ needs.release.outputs.RELEASE_TAG }}
+        secrets: inherit
