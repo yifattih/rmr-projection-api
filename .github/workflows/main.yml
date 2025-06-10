@@ -1,5 +1,5 @@
-name: Semantic Release
-run-name: CI Pipeline
+name: Workflows Orchestrator
+run-name: Workflows Orchestrator
 on:
     push:
         branches:

@@ -1,6 +1,5 @@
 name: Build Docker Image and Push Image to GCP Artifact Registry
 run-name: Build Docker Image and Push Image to GCP Artifact Registry
-
 on:
   workflow_call:
     inputs:
@@ -8,7 +7,6 @@ on:
             description: "Name of the service to build and push"
             type: string
             required: true
-
 jobs:
     build-push-image:
         name: Build and Push Image
