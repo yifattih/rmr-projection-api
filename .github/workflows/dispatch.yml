@@ -1,0 +1,54 @@
+name: Data Dispatcher to IaC Repository
+run-name: Data Dispatcher to IaC Repository
+on:
+    workflow_call:
+        inputs:
+            SERVICE_NAME:
+                description: "Name of the service to dispatch data for"
+                type: string
+                required: true
+            INGRESS_PORT:
+                description: "Cloud Run service ingress container port to expose"
+                type: string
+                required: true
+            INGRESS_ENV_VARS:
+                description: "Cloud Run service ingress constainer environment variables"
+                type: string
+                required: false
+            ENVIRONMENT:
+                description: "Environment to deploy to"
+                type: string
+                required: true
+            RELEASE_TAG:
+                description: "Repository tag to use for the deployment"
+                type: string
+                required: true
+            SIDECAR_NAME:
+                description: "Cloud Run service sidecar container name"
+                type: string
+                required: false
+            SIDECAR_RELEASE_TAG:
+                description: "Cloud Run service sidecar container release tag"
+                type: string
+                required: false
+jobs:
+    dispatch:
+        name: Dispatch Data to IaC Repository
+        runs-on: ubuntu-latest
+        steps:
+            - name: Dispatch required data
+              uses: peter-evans/repository-dispatch@v3.0.0
+              with:
+                token: ${{ secrets.PAT }}
+                repository: yifattih/rmr-projection-infra
+                event-type: deploy
+                client-payload: |
+                    {
+                        "service_name": ${{ inputs.SERVICE_NAME}},
+                        "ingress_port": ${{ inputs.INGRESS_PORT }},
+                        "ingress_env_vars": ${{ inputs.INGRESS_ENV_VARS }},
+                        "environment": ${{ inputs.ENVIRONMENT }},
+                        "release_tag": ${{ inputs.RELEASE_TAG }},
+                        "sidecar_name": ${{ inputs.SIDECAR_NAME }},
+                        "sidecar_release_tag": ${{ inputs.SIDECAR_RELEASE_TAG }}
+                    }
