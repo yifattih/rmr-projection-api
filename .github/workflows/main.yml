@@ -72,9 +72,14 @@ jobs:
     dispatch:
         name: Dispatch Data to IaC Repository
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha'
-        needs: [extract-service-name, release, push-gar]
+        needs: [extract-service-name, extract-environment-name, release, push-gar]
         uses: ./.github/workflows/dispatch.yml
         with:
             SERVICE_NAME: ${{ needs.extract-service-name.outputs.SERVICE_NAME }}
+            INGRESS_PORT: "8000"
+            INGRESS_ENV_VARS: '[{"name":"OTEL_SERVICE_NAME","value":"${{ needs.extract-service-name.outputs.SERVICE_NAME }}"},{"name":"OTLP_ENDPOINT","value":"http://localhost:4317"}]'
+            ENVIRONMENT: ${{ needs.extract-environment-name.outputs.ENVIRONMENT }}
             RELEASE_TAG: ${{ needs.release.outputs.RELEASE_TAG }}
+            SIDECAR_NAME: "alloy"
+            SIDECAR_RELEASE_TAG: "v1.0.0"
         secrets: inherit
