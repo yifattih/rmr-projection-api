@@ -17,7 +17,9 @@ jobs:
               id: extract
               run: |
                 repository_name=${{ github.event.repository.name }}
-                echo "SERVICE_NAME=${repository_name#*${{ env.SERVICE_NAME_PREFIX }}}" >> ${GITHUB_OUTPUT}
+                SERVICE_NAME=${repository_name#*${{ env.SERVICE_NAME_PREFIX }}}
+                echo "SERVICE_NAME=${SERVICE_NAME}" >> ${GITHUB_OUTPUT}
+                echo "Service name extracted '${SERVICE_NAME}' from repository name '${repository_name}'"
     extract-environment-name:
         name: Extract Environment Name
         runs-on: ubuntu-latest
@@ -55,7 +57,7 @@ jobs:
     push-docker-hub:
         name: Build Docker Image and Push to Docker Hub
         if: github.ref == 'refs/heads/dev'
-        needs: [extract-service-name, quality-security]
+        needs: [extract-service-name, extract-environment-name, quality-security]
         uses: ./.github/workflows/push-docker-hub.yml
         with:
             SERVICE_NAME: ${{ needs.extract-service-name.outputs.SERVICE_NAME }}
@@ -63,12 +65,11 @@ jobs:
     release:
         name: Make Release
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha'
-        needs: quality-security
+        needs: [extract-service-name, extract-environment-name, quality-security]
         uses: ./.github/workflows/release.yml
     push-gar:
         name: Build Docker Image and Push to Google Artifact Registry
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha'
-        needs: [extract-service-name,  extract-environment-name,release]
+        needs: [extract-service-name,  extract-environment-name, release]
         uses: ./.github/workflows/push-gar.yml
         with:
             SERVICE_NAME: ${{ needs.extract-service-name.outputs.SERVICE_NAME }}
@@ -77,7 +78,6 @@ jobs:
         secrets: inherit
     dispatch:
         name: Dispatch Data to IaC Repository
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/alpha'
         needs: [extract-service-name, extract-environment-name, release, push-gar]
         uses: ./.github/workflows/dispatch.yml
         with:
