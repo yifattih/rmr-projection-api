@@ -29,7 +29,7 @@ jobs:
               run: |
                 branch=${{ github.ref_name }}
                 case "${branch}" in
-                    main}
+                    main)
                         echo "ENVIRONMENT=production" >> ${GITHUB_OUTPUT}
                         ;;
                     alpha)
