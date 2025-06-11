@@ -30,16 +30,22 @@ jobs:
                 branch=${{ github.ref_name }}
                 case "${branch}" in
                     main)
-                        echo "ENVIRONMENT=production" >> ${GITHUB_OUTPUT}
+                        ENVIRONMENT="production"
+                        echo "ENVIRONMENT=${ENVIRONMENT}"
+                        echo "Environment set to '${ENVIRONMENT}' for branch '${branch}'"
                         ;;
                     alpha)
-                        echo "ENVIRONMENT=alpha" >> ${GITHUB_OUTPUT}
+                        ENVIRONMENT="alpha"
+                        echo "ENVIRONMENT=${ENVIRONMENT}"
+                        echo "Environment set to '${ENVIRONMENT}' for branch '${branch}'"
                         ;;
                     dev)
-                        echo "ENVIRONMENT=development" >> ${GITHUB_OUTPUT}
+                        ENVIRONMENT="development"
+                        echo "ENVIRONMENT=${ENVIRONMENT}"
+                        echo "Environment set to '${ENVIRONMENT}' for branch '${branch}'"
                         ;;
                     *)
-                        echo "No specific environment set for branch ${branch}"
+                        echo "No specific environment set for branch '${branch}'"
                         ;;
                     esac
     quality-security:
