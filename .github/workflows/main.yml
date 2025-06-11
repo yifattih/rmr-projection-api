@@ -1,5 +1,5 @@
-name: Workflows Orchestrator
-run-name: Workflows Orchestrator
+name: CI/CD Workflows Orchestrator
+run-name: CI/CD Workflows Orchestrator for ${{ github.event.repository.name }} 
 on:
     push:
         branches:
