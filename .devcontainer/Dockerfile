@@ -1,9 +1,13 @@
-FROM mcr.microsoft.com/devcontainers/base:bullseye
+FROM ubuntu:24.04
 
-ARG USERNAME=vscode
-
-# install jless (because its not available at https://containers.dev/features at time of writing)
-RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" \
-        && (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/vscode/.profile \
-        && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" \
-        && brew install jless
+RUN apt-get update \
+  && apt-get install -y \
+  git \
+  curl \
+  python3 \
+  python3-pip \
+  pipx \
+  ca-certificates \
+  build-essential \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
