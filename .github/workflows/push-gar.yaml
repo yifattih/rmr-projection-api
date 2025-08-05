@@ -1,0 +1,47 @@
+name: Build Docker Image and Push Image to GCP Artifact Registry
+run-name: Build Docker Image and Push Image to GCP Artifact Registry
+on:
+    workflow_call:
+        inputs:
+            SERVICE_NAME:
+                description: "Name of the service to build and push"
+                type: string
+                required: true
+            ENVIRONMENT:
+                description: "Environment to push the image to"
+                type: string
+                required: true
+            RELEASE_TAG:
+                description: "Repository tag to use for the image"
+                type: string
+                required: true
+
+jobs:
+    build-push:
+        name: Build Image and Push to Google Artifact Registry
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out repository
+              uses: actions/checkout@v4
+
+            - name: Authenticate to Google Cloud
+              uses: google-github-actions/auth@v2.1.7
+              with:
+                  credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+            - name: Set up Cloud SDK
+              uses: 'google-github-actions/setup-gcloud@v2.1.4'
+
+            - name: Configure  gcloud to use Docker
+              run: |
+                  gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3.10.0
+
+            - name: Build and Push
+              uses: docker/build-push-action@v6.15.0
+              with:
+                  context: .
+                  push: true
+                  tags: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ inputs.ENVIRONMENT }}/${{ inputs.SERVICE_NAME }}:${{ inputs.RELEASE_TAG }}

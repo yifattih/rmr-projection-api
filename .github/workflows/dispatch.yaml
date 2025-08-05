@@ -31,6 +31,7 @@ on:
                 description: "Cloud Run service sidecar container release tag"
                 type: string
                 required: false
+
 jobs:
     dispatch:
         name: Dispatch Data to IaC Repository
@@ -39,16 +40,16 @@ jobs:
             - name: Dispatch required data
               uses: peter-evans/repository-dispatch@v3.0.0
               with:
-                token: ${{ secrets.PAT }}
-                repository: yifattih/rmr-projection-infra
-                event-type: deploy
-                client-payload: |
-                    {
-                        "service_name": ${{ inputs.SERVICE_NAME}},
-                        "ingress_port": ${{ inputs.INGRESS_PORT }},
-                        "ingress_env_vars": ${{ inputs.INGRESS_ENV_VARS }},
-                        "environment": ${{ inputs.ENVIRONMENT }},
-                        "release_tag": ${{ inputs.RELEASE_TAG }},
-                        "sidecar_name": ${{ inputs.SIDECAR_NAME }},
-                        "sidecar_release_tag": ${{ inputs.SIDECAR_RELEASE_TAG }}
-                    }
+                  token: ${{ secrets.PAT }}
+                  repository: yifattih/rmr-projection-infra
+                  event-type: deploy
+                  client-payload: |
+                      {
+                          "service_name": ${{ inputs.SERVICE_NAME}},
+                          "ingress_port": ${{ inputs.INGRESS_PORT }},
+                          "ingress_env_vars": ${{ inputs.INGRESS_ENV_VARS }},
+                          "environment": ${{ inputs.ENVIRONMENT }},
+                          "release_tag": ${{ inputs.RELEASE_TAG }},
+                          "sidecar_name": ${{ inputs.SIDECAR_NAME }},
+                          "sidecar_release_tag": ${{ inputs.SIDECAR_RELEASE_TAG }}
+                      }
