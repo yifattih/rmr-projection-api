@@ -33,7 +33,7 @@ jobs:
                   name: flake8-report
                   path: reports/flake8-report.txt
                   if-no-files-found: warn
-                  rsetention-days: 30
+                  retention-days: 30
 
     format:
         name: Format
