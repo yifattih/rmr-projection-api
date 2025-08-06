@@ -1,12 +1,3 @@
-# [1.0.0-alpha.2](https://github.com/yifattih/rmr-projection-api/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2025-08-06)
-
-
-### Bug Fixes
-
-* add personal access token to solve semantic-release action ([b294a79](https://github.com/yifattih/rmr-projection-api/commit/b294a7953ea499b9072fd5740a1ecf36c98303a5))
-* introduce workflows pipeline testing trigger file ([546c18e](https://github.com/yifattih/rmr-projection-api/commit/546c18e45884a00be7d95f4b81850480e39f63c1))
-* update deployment environment detection step to write environment ([5562465](https://github.com/yifattih/rmr-projection-api/commit/5562465e4f05829511d881b934201ea8521db529))
-
 # 1.0.0-alpha.1 (2025-04-10)
 
 

@@ -16,3 +16,6 @@ Solution: The token was created, added as secret named PAT to avoid conflicts wi
 ***Workflow failed***
 Cause: The job step in change of detecting the environment based on branch name was not writing the ENVIRONMENT value to the outputs.
 Solution: added redirection to the ${GITHuB_OUTPUT} variable
+
+Cause: Workflow did not run because of tags mismatch
+Fix: cleaned up alpha.2 from changelog and deleted tag
