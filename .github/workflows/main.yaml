@@ -79,6 +79,7 @@ jobs:
             - extract-environment-name
             - quality-security
         uses: ./.github/workflows/release.yaml
+        secrets: inherit
 
     push-gar:
         name: Build Docker Image and Push to Google Artifact Registry
