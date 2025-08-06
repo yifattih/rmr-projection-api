@@ -27,7 +27,7 @@ jobs:
         name: Extract Environment Name
         runs-on: ubuntu-latest
         outputs:
-            ENVIRONMENT: ${{ steps.extract.outputs.ENVIRONEMNT }}
+            ENVIRONMENT: ${{ steps.extract.outputs.ENVIRONMENT }}
         steps:
             - name: Extract Environment Name
               id: extract

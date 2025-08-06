@@ -14,7 +14,8 @@ Cause: The semantic-release action requires a Personal Access Token.
 Solution: The token was created, added as secret named PAT to avoid conflicts with GITHUB_TOKEN vairbale, and added as environment variable in the workflow job.
 
 ***Workflow failed***
-Cause: The job step in change of detecting the environment based on branch name was not writing the ENVIRONMENT value to the outputs.
+Note: semantic-release job succeed
+Cause: The job step in charge of detecting the environment based on branch name was not writing the ENVIRONMENT value to the outputs.
 Solution: added redirection to the ${GITHuB_OUTPUT} variable
 
 Cause: Workflow did not run because of tags mismatch
@@ -22,3 +23,6 @@ Fix: cleaned up alpha.2 from changelog and deleted tag
 
 Cause: The release was removed but not the tag and the semantic-release action failed
 Fix: deleted tag
+
+Cause: The job step in charge of detecting the environment had a typo in the output name
+Fix: The typo was removed. In addition, the release and release tags created
