@@ -19,3 +19,6 @@ Solution: added redirection to the ${GITHuB_OUTPUT} variable
 
 Cause: Workflow did not run because of tags mismatch
 Fix: cleaned up alpha.2 from changelog and deleted tag
+
+Cause: The release was removed but not the tag and the semantic-release action failed
+Fix: deleted tag
