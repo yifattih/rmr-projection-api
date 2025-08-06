@@ -24,5 +24,10 @@ Fix: cleaned up alpha.2 from changelog and deleted tag
 Cause: The release was removed but not the tag and the semantic-release action failed
 Fix: deleted tag
 
+***Workflow failed***
 Cause: The job step in charge of detecting the environment had a typo in the output name
 Fix: The typo was removed. In addition, the release and release tags created
+
+***Workflow failed***
+Cause: client-payload needed quoting for valid json string
+Fix: added quotes to all inputs

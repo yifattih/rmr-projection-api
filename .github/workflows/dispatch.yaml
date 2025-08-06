@@ -45,11 +45,11 @@ jobs:
                   event-type: deploy
                   client-payload: |
                       {
-                          "service_name": ${{ inputs.SERVICE_NAME}},
-                          "ingress_port": ${{ inputs.INGRESS_PORT }},
+                          "service_name": "${{ inputs.SERVICE_NAME}}",
+                          "ingress_port": "${{ inputs.INGRESS_PORT }}",
                           "ingress_env_vars": ${{ inputs.INGRESS_ENV_VARS }},
-                          "environment": ${{ inputs.ENVIRONMENT }},
-                          "release_tag": ${{ inputs.RELEASE_TAG }},
-                          "sidecar_name": ${{ inputs.SIDECAR_NAME }},
-                          "sidecar_release_tag": ${{ inputs.SIDECAR_RELEASE_TAG }}
+                          "environment": "${{ inputs.ENVIRONMENT }}",
+                          "release_tag": "${{ inputs.RELEASE_TAG }}",
+                          "sidecar_name": "${{ inputs.SIDECAR_NAME }}",
+                          "sidecar_release_tag": "${{ inputs.SIDECAR_RELEASE_TAG }}"
                       }
