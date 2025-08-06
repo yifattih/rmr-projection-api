@@ -36,17 +36,17 @@ jobs:
                   case "${branch}" in
                       main)
                           ENVIRONMENT='production'
-                          echo "ENVIRONMENT=${ENVIRONMENT}"
+                          echo "ENVIRONMENT=${ENVIRONMENT}" >> ${GITHUB_OUTPUT}
                           echo "Environment set to '${ENVIRONMENT}' for branch '${branch}'"
                           ;;
                       alpha)
                           ENVIRONMENT='alpha'
-                          echo "ENVIRONMENT=${ENVIRONMENT}"
+                          echo "ENVIRONMENT=${ENVIRONMENT}" >> ${GITHUB_OUTPUT}
                           echo "Environment set to '${ENVIRONMENT}' for branch '${branch}'"
                           ;;
                       dev)
                           ENVIRONMENT='development'
-                          echo "ENVIRONMENT=${ENVIRONMENT}"
+                          echo "ENVIRONMENT=${ENVIRONMENT}" >> ${GITHUB_OUTPUT}
                           echo "Environment set to '${ENVIRONMENT}' for branch '${branch}'"
                           ;;
                       *)

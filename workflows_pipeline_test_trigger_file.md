@@ -10,4 +10,9 @@ All changes that will be done will be related to infrastructure.
 The api Cloud Run service was deleted to test the 'first_deploy' deployment strategy.
 
 ***Workflow failed***
-The semantic-release action requires a Personal Access Token. The token was created, added as secret named PAT to avoid conflicts with GITHUB_TOKEN vairbale, and added as environment variable in the workflow job.
+Cause: The semantic-release action requires a Personal Access Token.
+Solution: The token was created, added as secret named PAT to avoid conflicts with GITHUB_TOKEN vairbale, and added as environment variable in the workflow job.
+
+***Workflow failed***
+Cause: The job step in change of detecting the environment based on branch name was not writing the ENVIRONMENT value to the outputs.
+Solution: added redirection to the ${GITHuB_OUTPUT} variable
