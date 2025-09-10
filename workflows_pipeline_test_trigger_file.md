@@ -31,3 +31,7 @@ Fix: The typo was removed. In addition, the release and release tags created
 ***Workflow failed***
 Cause: client-payload needed quoting for valid json string
 Fix: added quotes to all inputs
+
+**Workflow is running now**
+There is an error in infra repo workflow
+This file will continue be used for testing
