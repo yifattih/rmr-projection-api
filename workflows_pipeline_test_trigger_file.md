@@ -36,4 +36,5 @@ Fix: added quotes to all inputs
 There is an error in infra repo workflow
 This file will continue be used for testing
 
+There was an error in tf api module; wrong var referencing
 
