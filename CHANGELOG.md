@@ -1,3 +1,10 @@
+# [1.0.0-alpha.4](https://github.com/yifattih/rmr-projection-api/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2025-09-12)
+
+
+### Bug Fixes
+
+* **workflow:** dummy change to trigger file ([9d672f7](https://github.com/yifattih/rmr-projection-api/commit/9d672f75a7484b2538179a59759ab5cfdb07b658))
+
 # [1.0.0-alpha.3](https://github.com/yifattih/rmr-projection-api/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2025-09-11)
 
 
