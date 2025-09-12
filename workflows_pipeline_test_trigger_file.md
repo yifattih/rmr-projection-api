@@ -38,3 +38,8 @@ This file will continue be used for testing
 
 There was an error in tf api module; wrong var referencing
 I implemented a fix to previous bug in infra repo; split invoker block
+
+The splitting fixed the error
+Now I included the service account argument to the public invoker block
+That was incorrect
+I fixed the error and added the service account to the private invoker block
