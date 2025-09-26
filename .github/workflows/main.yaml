@@ -1,12 +1,12 @@
-name: CI/CD Workflows Orchestrator
-run-name: CI/CD Workflows Orchestrator for ${{ github.event.repository.name }}
+name: CI/CD Orchestrator
+run-name: "CI/CD Orchestrator - Branch: ${{ github.ref_name }} (Commit: ${{ github.sha }})"
 on:
     push:
         branches:
             - '**'
 
 env:
-    SERVICE_NAME_PREFIX: rmr-projection-
+    SERVICE_NAME_PREFIX: 'rmr-projection-'
     INGRESS_PORT: '8000'
 
 jobs:
