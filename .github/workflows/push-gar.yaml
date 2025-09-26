@@ -1,5 +1,5 @@
-name: Build Docker Image and Push Image to GCP Artifact Registry
-run-name: Build Docker Image and Push Image to GCP Artifact Registry
+name: Build & Push Image to GAR
+run-name: Build & Push Image to GAR
 on:
     workflow_call:
         inputs:
@@ -21,7 +21,7 @@ jobs:
         name: Build Image and Push to Google Artifact Registry
         runs-on: ubuntu-latest
         steps:
-            - name: Check out repository
+            - name: Checkout Source Code 
               uses: actions/checkout@v4
 
             - name: Authenticate to Google Cloud
@@ -32,7 +32,7 @@ jobs:
             - name: Set up Cloud SDK
               uses: 'google-github-actions/setup-gcloud@v2.1.4'
 
-            - name: Configure  gcloud to use Docker
+            - name: Configure gcloud as Docker Credential Helper
               run: |
                   gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
 
