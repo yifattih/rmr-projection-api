@@ -7,7 +7,6 @@ on:
 
 env:
     SERVICE_NAME_PREFIX: 'rmr-projection-'
-    INGRESS_PORT: '8000'
 
 jobs:
     extract-service-name:
@@ -105,7 +104,7 @@ jobs:
         uses: ./.github/workflows/dispatch.yaml
         with:
             SERVICE_NAME: ${{ needs.extract-service-name.outputs.SERVICE_NAME }}
-            INGRESS_PORT: ${{ env.INGRESS_PORT }}
+            INGRESS_PORT: '8000'
             INGRESS_ENV_VARS: '[{"name":"OTEL_SERVICE_NAME","value":"${{ needs.extract-service-name.outputs.SERVICE_NAME }}"},{"name":"OTLP_ENDPOINT","value":"http://localhost:4317"}]'
             ENVIRONMENT: ${{ needs.extract-environment-name.outputs.ENVIRONMENT }}
             RELEASE_TAG: ${{ needs.release.outputs.RELEASE_TAG }}
