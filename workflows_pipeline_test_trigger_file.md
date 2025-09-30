@@ -47,3 +47,6 @@ I fixed the error and added the service account to the private invoker block
 **Implemented solution from dummy repo**
 I updated the main workflow with the changes implemented and tested in the dummy repository
 This log will trigger the workflow for testing
+
+Got an error; using top level env var as reusable workflow input
+Pushed again and it succeeded; dev image was pushed to Docker Hub successfully
