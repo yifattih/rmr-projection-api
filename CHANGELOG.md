@@ -1,3 +1,11 @@
+# [1.0.0-alpha.6](https://github.com/yifattih/rmr-projection-api/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2025-09-30)
+
+
+### Bug Fixes
+
+* add log in dummy file to trigger workflow pipeline ([8cc2829](https://github.com/yifattih/rmr-projection-api/commit/8cc282952c14f45f629fe343caaa6c78567d7fed))
+* add log to dummy file to trigger pipeline ([d5a3629](https://github.com/yifattih/rmr-projection-api/commit/d5a36296f2da45ecdde33317f65677ba448146a5))
+
 # [1.0.0-alpha.5](https://github.com/yifattih/rmr-projection-api/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2025-09-12)
 
 
