@@ -1,3 +1,10 @@
+# [1.0.0-alpha.8](https://github.com/yifattih/rmr-projection-api/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2025-10-02)
+
+
+### Bug Fixes
+
+* dummy change to trigger pipeline ([929aab9](https://github.com/yifattih/rmr-projection-api/commit/929aab989fd4262d4ba967debe59030243fabf7b))
+
 # [1.0.0-alpha.7](https://github.com/yifattih/rmr-projection-api/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2025-10-02)
 
 
